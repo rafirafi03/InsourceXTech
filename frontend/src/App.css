@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-gradient-to-br from-[#ffffff] via-[#dfe4f2] to-[#aeb8d6] text-black 
+    px-4 sm:px-6 md:px-5 lg:px-15 xl:px-20 2xl:px-25;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradient 6s ease infinite;
+  background-size: 200% 200%;
+  opacity: 0.9; /* Makes it blend well over white */
+}
+
