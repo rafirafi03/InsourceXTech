@@ -1,13 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
+import { useEditAboutCompanyMutation, useGetAboutCompanyQuery } from "../../store/slices/apiSlices";
 
 export default function About() {
+
+  const [ aboutSubmit ] = useEditAboutCompanyMutation();
+  const {data: about} = useGetAboutCompanyQuery(undefined);
+
+  console.log("about company: ", about)
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
-    message: "",
+    phone: "",
+    location: "",
+    timing: "",
+    about: "",
+    vision: "",
+    mission: "",
   });
+
+  useEffect(() => {
+    if (about) {
+      setFormData({
+        name: about.aboutCompany?.name || "",
+        email: about.aboutCompany?.email || "",
+        phone: about.aboutCompany?.phone || "",
+        location: about.aboutCompany?.location || "",
+        timing: about.aboutCompany?.timing || "",
+        about: about.aboutCompany?.about || "",
+        vision: about.aboutCompany?.vision || "",
+        mission: about.aboutCompany?.mission || "",
+      });
+    }
+  }, [about]);
 
   const handleChange = (e) => {
     setFormData({
@@ -16,12 +42,13 @@ export default function About() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log("Form submitted:", formData);
-    // Reset form
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    const res = await aboutSubmit(formData).unwrap();
+    if(res.success) {
+      console.log('success')
+    }
   };
 
   return (
@@ -73,9 +100,9 @@ export default function About() {
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                   placeholder="John Doe"
@@ -88,10 +115,10 @@ export default function About() {
                   Company Location
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={formData.location}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                   placeholder="john@example.com"
@@ -106,9 +133,9 @@ export default function About() {
               </label>
               <input
                 type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
+                id="timing"
+                name="timing"
+                value={formData.timing}
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-lg border border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
                 placeholder="How can we help you?"
@@ -122,10 +149,10 @@ export default function About() {
               </label>
               <textarea
                 id="message"
-                name="message"
-                value={formData.message}
+                name="about"
+                value={formData.about}
                 onChange={handleChange}
-                rows="3"
+                rows={3}
                 className="w-full px-4 py-3 rounded-lg border border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
                 placeholder="Tell us about your project or inquiry..."
                 required
@@ -137,10 +164,10 @@ export default function About() {
               </label>
               <textarea
                 id="message"
-                name="message"
-                value={formData.message}
+                name="vision"
+                value={formData.vision}
                 onChange={handleChange}
-                rows="3"
+                rows={3}
                 className="w-full px-4 py-3 rounded-lg border border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
                 placeholder="Tell us about your project or inquiry..."
                 required
@@ -152,10 +179,10 @@ export default function About() {
               </label>
               <textarea
                 id="message"
-                name="message"
-                value={formData.message}
+                name="mission"
+                value={formData.mission}
                 onChange={handleChange}
-                rows="3"
+                rows={3}
                 className="w-full px-4 py-3 rounded-lg border border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
                 placeholder="Tell us about your project or inquiry..."
                 required
