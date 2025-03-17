@@ -67,6 +67,31 @@ export const apiSlices = createApi({
             body: postData
         })
     }),
+    deleteSolution : builder.mutation({
+        query: (id)=> ({
+            url: `/deleteSolution/${id}`,
+            method: HttpMethod.DELETE,
+        })
+    }),
+    deleteService : builder.mutation({
+        query: (id)=> ({
+            url: `/deleteService/${id}`,
+            method: HttpMethod.DELETE
+        })
+    }),
+    login : builder.mutation({
+        query: (postData)=> ({
+            url: '/login',
+            method: HttpMethod.POST,
+            body: postData
+        })
+    }),
+    logout : builder.mutation({
+        query : ()=> ({
+            url : '/logout',
+            method: HttpMethod.POST,
+        })
+    })
   }),
 });
 
@@ -79,4 +104,9 @@ export const {
     useAddSolutionsMutation,
     useEditAboutCompanyMutation,
     useEditWhyUsMutation,
+    useDeleteServiceMutation,
+    useDeleteSolutionMutation,
+    useSendMailMutation,
+    useLoginMutation,
+    useLogoutMutation
 } = apiSlices;

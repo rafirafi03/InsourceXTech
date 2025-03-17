@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface ErrorResponse {
     message: string;
     error?: string;

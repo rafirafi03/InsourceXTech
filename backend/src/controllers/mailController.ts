@@ -9,7 +9,7 @@ export const sendMail = async (req: Request, res: Response): Promise<void> => {
     
     // Simple validation
     if (!name || !email || !message) {
-      res.status(400).json({ message: 'Please provide name, email and message' });
+      res.status(400).json({ success: false, message: 'Please provide name, email and message' });
       return;
     }
     
@@ -19,12 +19,12 @@ export const sendMail = async (req: Request, res: Response): Promise<void> => {
       text: `Name: ${name}\nEmail: ${email}\n\nMessage: ${message}`
     });
     
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200).json({ success: true, message: 'Email sent successfully' });
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ sucess: false, message: error.message });
     } else {
-      res.status(500).json({ message: 'An unknown error occurred' });
+      res.status(500).json({ success: false, message: 'An unknown error occurred' });
     }
   }
 };

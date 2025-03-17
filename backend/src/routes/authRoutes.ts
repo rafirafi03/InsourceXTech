@@ -1,0 +1,10 @@
+// src/routes/aboutRoutes.ts
+import express from 'express';
+import { Login, Logout } from '../controllers/authController';
+
+const router = express.Router();
+
+router.post('/login', Login);
+router.post('/logout', Logout);
+
+export default router;

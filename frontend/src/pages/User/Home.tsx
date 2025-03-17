@@ -8,16 +8,9 @@ import OurSoultions from '../../components/User/OurSolutions/solutions';
 import MissionVisionComponent from "../../components/User/VisionAndMission/visionAndMission";
 import WhyChooseUsComponent from "../../components/User/WhyChooseUsSection/WhyUs";
 import Footer from "../../components/User/Footer/footer";
-import { useState } from "react";
-import Loader from '../../components/User/Loader/loader'
 
 function App() {
 
-  const [loading, setLoading] = useState(false)
-
-  if(loading) {
-    return <Loader/>
-  }
   
   return (
     <>

@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose';
 
 export interface IServices extends Document {
   title: string;
-  description: string;
+  image: string;
 }
 
 const serviceSchema = new mongoose.Schema({
@@ -10,7 +10,7 @@ const serviceSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  description: {
+  image: {
     type: String,
     required: true,
   }

@@ -5,6 +5,7 @@ import servicesRoutes from './servicesRoutes';
 import solutionsRoutes from './solutionsRoutes';
 import whyUsRoutes from './whyUsRoutes';
 import mailRoutes from './mailRoutes';
+import authRoutes from './authRoutes';
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/', servicesRoutes);
 router.use('/', solutionsRoutes);
 router.use('/', whyUsRoutes);
 router.use('/', mailRoutes);
+router.use('/', authRoutes);
 
 export default router;

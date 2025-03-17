@@ -25,10 +25,10 @@ export const getWhyUs = async (req: Request, res: Response): Promise<void> => {
 // Edit why us
 export const editWhyUs = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, title, description } = req.body;
+    const { _id, title, description } = req.body;
     
     // Find existing record or create new one
-    let whyUs = await WhyUs.findOne({_id: id});
+    let whyUs = await WhyUs.findOne({_id: _id});
     
     if (whyUs) {
       whyUs.title = title;

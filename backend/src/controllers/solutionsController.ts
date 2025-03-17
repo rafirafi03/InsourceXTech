@@ -19,11 +19,19 @@ export const getSolutions = async (req: Request, res: Response): Promise<void> =
 // Add new solution
 export const addSolution = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title, image } = req.body;
+    const { title } = req.body;
+
+    if(!req.file) {
+      res.status(400).json({ success: false, message: 'No image uploaded' });
+      return;
+    }
+
+    console.log("req.fileee", req.file)
+    const imageUrl = req.file.path;
     
     const newSolution = await Solution.create({
       title,
-      image,
+      image: imageUrl,
     });
     
     res.status(201).json({success: true, newSolution});
@@ -35,3 +43,32 @@ export const addSolution = async (req: Request, res: Response): Promise<void> =>
     }
   }
 };
+
+export const deleteSolution = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ success: false, message: "No ID provided" });
+      return;
+    }
+
+    // Find and delete the solution
+    const deletedSolution = await Solution.findByIdAndDelete(id);
+
+    if (!deletedSolution) {
+      res.status(404).json({ success: false, message: "Solution not found" });
+      return;
+    }
+
+    res.status(200).json({ success: true, message: "Solution deleted successfully" });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ success: false, message: error.message });
+    } else {
+      res.status(500).json({ success: false, message: "An unknown error occurred" });
+    }
+  }
+};
+
+

@@ -1,18 +1,27 @@
 import { X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-interface pageProps {
-    isOpen: boolean;
-    toggleSidebar: () => void
+interface PageProps {
+  isOpen: boolean;
+  toggleSidebar: () => void;
 }
 
-const Sidebar = ({ isOpen, toggleSidebar }: pageProps) => {
+const Sidebar = ({ isOpen, toggleSidebar }: PageProps) => {
+  const navigate = useNavigate();
+  
   const menuItems = [
-    { id: 'about', label: 'About', icon: '📄' },
-    { id: 'services', label: 'Services', icon: '🛠️' },
-    { id: 'why-us', label: 'Why Us', icon: '🏆' },
-    { id: 'solutions', label: 'Solutions', icon: '💡' },
-    // { id: 'mission-vision', label: 'Mission & Vision', icon: '🔭' },
+    { id: 'about', label: 'About', icon: '📄', path: '/admin' },
+    { id: 'services', label: 'Services', icon: '🛠️', path: '/services' },
+    { id: 'whyUs', label: 'Why Us', icon: '🏆', path: '/whyUs' },
+    { id: 'solutions', label: 'Solutions', icon: '💡', path: '/solutions' },
   ];
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    if (window.innerWidth < 1024) { // Close sidebar on navigation for mobile
+      toggleSidebar();
+    }
+  };
 
   return (
     <>
@@ -36,6 +45,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: pageProps) => {
             <div
               key={item.id}
               className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 hover:text-blue-500 cursor-pointer transition-colors duration-200"
+              onClick={() => handleNavigation(item.path)}
             >
               <span className="mr-3">{item.icon}</span>
               <span>{item.label}</span>

@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useSendMailMutation } from "../../../store/slices/apiSlices";
+import { toast } from "react-toastify";
 
 const ContactComponent = () => {
+
+  const [sendMail] = useSendMailMutation();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,11 +20,25 @@ const ContactComponent = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
-    // Reset form
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    e.preventDefault()
+    const loadingToast = toast.loading('deleting...')
+        try {
+          const res = await sendMail(formData).unwrap();
+          toast.dismiss(loadingToast)
+          if(res.success) {
+            toast.success('mail send successfully')
+          } else {
+            toast.error('something went wrong')
+          }
+    
+          console.log("res:", res);
+        } catch (error) {
+          toast.dismiss(loadingToast)
+          toast.error('something went wrong')
+          console.error("Failed to send mail", error);
+        }
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
