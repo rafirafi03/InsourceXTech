@@ -5,6 +5,8 @@ import helmet from "helmet";
 import routes from "./routes";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
+import cookieParser from "cookie-parser";
+
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // Routes
 app.use("/api", routes);

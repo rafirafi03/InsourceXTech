@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
-import { useEditAboutCompanyMutation, useGetAboutCompanyQuery } from "../../store/slices/apiSlices";
+import { useEditAboutCompanyMutation, useGetAdminAboutCompanyQuery } from "../../store/slices/apiSlices";
 import { IAboutFormData } from "../../types";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 
 export default function About() {
+  const navigate = useNavigate()
   const [aboutSubmit] = useEditAboutCompanyMutation();
-  const { data: about } = useGetAboutCompanyQuery(undefined);
+  const { data: about, error } = useGetAdminAboutCompanyQuery(undefined);
   const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 401) {
+      localStorage.removeItem("adminToken");
+      navigate("/login");
+    }
+  }, [error, navigate]);
 
   const [formData, setFormData] = useState<IAboutFormData>({
     name: "",
@@ -57,7 +66,12 @@ export default function About() {
           toast.success("Edit successful");
           setIsEditMode(false); // Turn off edit mode after success
         } else {
-          toast.error("Something went wrong");
+          if (res.status == 401) {
+            toast.warning("session expired! logging out...");
+            localStorage.removeItem("adminToken");
+            navigate("/login");
+          }
+          toast.error("something went wrong!");
         }
       } catch (error) {
         toast.dismiss(loadingToast);

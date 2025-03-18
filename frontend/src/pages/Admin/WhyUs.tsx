@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
-import { useEditWhyUsMutation, useGetWhyUsQuery } from "../../store/slices/apiSlices";
-import { toast } from 'react-toastify';
+import {
+  useEditWhyUsMutation,
+  useGetAdminWhyUsQuery,
+} from "../../store/slices/apiSlices";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function WhyUs() {
-  const {data: whyus } = useGetWhyUsQuery(undefined);
-  const [editWhyus] = useEditWhyUsMutation()
-  const [forms, setForms] = useState<{ _id: string; title: string; description: string }[]>([]);
+  const navigate = useNavigate();
+  const { data: whyus, error } = useGetAdminWhyUsQuery(undefined);
+  const [editWhyus] = useEditWhyUsMutation();
+  const [forms, setForms] = useState<
+    { _id: string; title: string; description: string }[]
+  >([]);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 401) {
+      localStorage.removeItem("adminToken");
+      navigate("/login");
+    }
+  }, [error, navigate]);
 
   // Fetch Data from Backend
   useEffect(() => {
@@ -21,30 +35,41 @@ export default function WhyUs() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const updatedForms = [...forms];
-    updatedForms[index] = { ...updatedForms[index], [e.target.name]: e.target.value };
+    updatedForms[index] = {
+      ...updatedForms[index],
+      [e.target.name]: e.target.value,
+    };
     setForms(updatedForms);
   };
 
   // Handle Form Submission
-  const handleSubmit = async (index: number, e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    index: number,
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
-    const loadingToast = toast.loading('submitting...')
+    const loadingToast = toast.loading("submitting...");
     try {
       const { _id, title, description } = forms[index];
-      const res = await editWhyus({_id, title, description}).unwrap()
-      toast.dismiss(loadingToast)
+      const res = await editWhyus({ _id, title, description }).unwrap();
+      toast.dismiss(loadingToast);
 
-      if(res.success) {
-        toast.success('edited successfull')
+      if (res.success) {
+        toast.success("edited successfull");
       } else {
-        toast.error('something went wrong')
+        if (res.status == 401) {
+          toast.warning("session expired! logging out...");
+          localStorage.removeItem("adminToken");
+          navigate("/login");
+        }
+        toast.error("something went wrong!");
       }
 
       console.log(`Form ${index + 1} updated successfully,${res}`);
     } catch (error) {
-      toast.dismiss(loadingToast)
-      toast.error('something went wrong')
+      toast.dismiss(loadingToast);
+      toast.error("something went wrong");
       console.error(`Error updating form ${index + 1}:`, error);
     }
   };
@@ -52,13 +77,18 @@ export default function WhyUs() {
   return (
     <AdminLayout>
       <div className="w-full max-w-full">
-        <h3 className="text-2xl text-blue-900 font-bold mb-6">Why Us Details</h3>
+        <h3 className="text-2xl text-blue-900 font-bold mb-6">
+          Why Us Details
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {forms.map((form, index) => (
             <div key={form._id} className="bg-white rounded-2xl shadow-xl p-8">
               <form onSubmit={(e) => handleSubmit(index, e)}>
                 <div className="mb-5">
-                  <label className="block text-black/50 mb-2" htmlFor={`title-${form._id}`}>
+                  <label
+                    className="block text-black/50 mb-2"
+                    htmlFor={`title-${form._id}`}
+                  >
                     Title
                   </label>
                   <input
@@ -72,7 +102,10 @@ export default function WhyUs() {
                   />
                 </div>
                 <div className="mb-5">
-                  <label className="block text-black/50 mb-2" htmlFor={`description-${form._id}`}>
+                  <label
+                    className="block text-black/50 mb-2"
+                    htmlFor={`description-${form._id}`}
+                  >
                     Why Us Reason
                   </label>
                   <textarea

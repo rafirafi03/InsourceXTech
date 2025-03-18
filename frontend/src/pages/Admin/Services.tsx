@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   useDeleteServiceMutation,
-  useGetServicesQuery,
+  useGetAdminServicesQuery,
 } from "../../store/slices/apiSlices";
 import AdminLayout from "./AdminLayout";
 import { Trash } from "lucide-react";
@@ -11,15 +11,21 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Services() {
-
   const navigate = useNavigate();
-  
-  const { data } = useGetServicesQuery(undefined);
+
+  const { data, error } = useGetAdminServicesQuery(undefined);
   const [services, setServices] = useState<IService[]>([]);
   const [deleteService] = useDeleteServiceMutation();
 
   const [deleteId, setDeleteId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 401) {
+      localStorage.removeItem("adminToken");
+      navigate("/login");
+    }
+  }, [error, navigate]);
 
   useEffect(() => {
     if (data) {
@@ -33,29 +39,33 @@ export default function Services() {
   };
 
   const handleConfirmDelete = async () => {
-
-    const loadingToast = toast.loading('deleting...')
+    const loadingToast = toast.loading("deleting...");
     try {
       const res = await deleteService(deleteId).unwrap();
-      toast.dismiss(loadingToast)
-      if(res.success) {
-        toast.success('deleted successfully')
+      toast.dismiss(loadingToast);
+      if (res.success) {
+        toast.success("deleted successfully");
         // If you want to update the UI immediately without waiting for a refetch
         setServices(services.filter((service) => service._id !== deleteId));
       } else {
-        toast.error('something went wrong')
+        if (res.status == 401) {
+          toast.warning("session expired! logging out...");
+          localStorage.removeItem("adminToken");
+          navigate("/login");
+        }
+        toast.error("something went wrong!");
       }
 
       console.log("res:", res);
     } catch (error) {
-      toast.dismiss(loadingToast)
-      toast.error('something went wrong')
+      toast.dismiss(loadingToast);
+      toast.error("something went wrong");
       console.error("Failed to delete services:", error);
     }
   };
 
   const handleNavigation = () => {
-    navigate('/addServices');
+    navigate("/addServices");
   };
 
   return (

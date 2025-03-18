@@ -7,6 +7,8 @@ import Solutions from "./pages/Admin/Solutions";
 import AddSolutions from "./pages/Admin/AddSolutions";
 import WhyUs from "./pages/Admin/WhyUs";
 import Login from "./pages/Admin/login";
+import ChangePass from './pages/Admin/changePass'
+import ResetPassword from './pages/Admin/ResetPassword'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./routes/protectedRoute";
@@ -21,6 +23,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route element={<PublicRoute />}>
             <Route path="/login" element={<Login />} />
+            <Route path='/resetPassword/:token' element={<ResetPassword/>} />
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/admin" element={<About />} />
@@ -29,6 +32,7 @@ function App() {
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/addSolutions" element={<AddSolutions />} />
             <Route path="/whyUs" element={<WhyUs />} />
+            <Route path="/changePass" element={<ChangePass />} />
           </Route>
         </Routes>
       </Router>

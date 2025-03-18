@@ -23,7 +23,7 @@ const ContactComponent = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault()
-    const loadingToast = toast.loading('deleting...')
+    const loadingToast = toast.loading('sending...')
         try {
           const res = await sendMail(formData).unwrap();
           toast.dismiss(loadingToast)

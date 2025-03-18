@@ -59,14 +59,19 @@ export default function AddService() {
       console.log("Service added successfully", res);
       if(res.success) {
         toast.success('added successfully')
+      } else {
+        if (res.status == 401) {
+          toast.warning("session expired! logging out...");
+          localStorage.removeItem("adminToken");
+          navigate("/login");
+        }
+        toast.error("something went wrong!");
       }
       
       // Reset form after submission
       setFormData({ title: "", image: null });
       setPreviewUrl(null);
       
-      // Optionally redirect to services page
-      // window.location.href = "/admin/services";
     } catch (error) {
       toast.dismiss(toastLoading)
       toast.error('something went wrong')

@@ -14,6 +14,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: PageProps) => {
     { id: 'services', label: 'Services', icon: '🛠️', path: '/services' },
     { id: 'whyUs', label: 'Why Us', icon: '🏆', path: '/whyUs' },
     { id: 'solutions', label: 'Solutions', icon: '💡', path: '/solutions' },
+    { id: 'changePass', label: 'change pass', icon: '🔑', path: '/changePass' },
   ];
 
   const handleNavigation = (path: string) => {

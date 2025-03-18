@@ -9,6 +9,12 @@ export interface IServiceFormData {
     image: File | null
 }
 
+export interface IChangePass {
+  currentPass : string;
+  newPass : string;
+  confirmPass: string;
+}
+
 export interface IAboutFormData {
   name: string;
   email: string;

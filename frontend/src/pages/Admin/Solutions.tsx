@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDeleteSolutionMutation, useGetSolutionsQuery } from '../../store/slices/apiSlices';
+import { useDeleteSolutionMutation, useGetAdminSolutionsQuery } from '../../store/slices/apiSlices';
 import AdminLayout from './AdminLayout';
 import { Trash } from 'lucide-react';
 import { IService } from '../../types';
@@ -10,12 +10,19 @@ import { toast } from 'react-toastify';
 export default function Services() {
 
   const navigate = useNavigate()
-  const { data } = useGetSolutionsQuery(undefined);
+  const { data, error } = useGetAdminSolutionsQuery(undefined);
   const [solutions, setSolutions] = useState<IService[]>([]);
   const [deleteSolution] = useDeleteSolutionMutation();
 
   const [deleteId, setDeleteId] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (error && "status" in error && error.status === 401) {
+      localStorage.removeItem("adminToken");
+      navigate("/login");
+    }
+  }, [error, navigate]);
 
   useEffect(() => {
     if (data) {
@@ -40,7 +47,12 @@ export default function Services() {
         toast.success('deleted successfully')
         setSolutions(solutions.filter(solution => solution._id!== deleteId));
       } else {
-        toast.error('something went wrong')
+        if (res.status == 401) {
+          toast.warning("session expired! logging out...");
+          localStorage.removeItem("adminToken");
+          navigate("/login");
+        }
+        toast.error("something went wrong!");
       }
 
       console.log("res:", res)

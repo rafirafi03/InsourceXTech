@@ -62,7 +62,12 @@ export default function AddService() {
       if(res.success) {
         toast.success('added successfully')
       } else {
-        toast.error('something went wrong')
+        if (res.status == 401) {
+          toast.warning("session expired! logging out...");
+          localStorage.removeItem("adminToken");
+          navigate("/login");
+        }
+        toast.error("something went wrong!");
       }
       console.log("Service added successfully", res);
       

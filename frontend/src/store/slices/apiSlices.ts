@@ -8,105 +8,157 @@ export const apiSlices = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    getAboutCompany : builder.query({
-        query: ()=> ({
-            url: '/aboutCompany',
-            method: HttpMethod.GET
-        })
+    getAboutCompany: builder.query({
+      query: () => ({
+        url: "/aboutCompany",
+        method: HttpMethod.GET,
+      }),
     }),
-    getWhyUs : builder.query({
-        query: ()=> ({
-            url: '/whyUs',
-            method: HttpMethod.GET
-        })
+    getAdminAboutCompany: builder.query({
+      query: () => ({
+        url: "/admin/aboutCompany",
+        method: HttpMethod.GET,
+      }),
     }),
-    getServices : builder.query({
-        query : ()=> ({
-            url: '/getServices',
-            method: HttpMethod.GET
-        })
+    getWhyUs: builder.query({
+      query: () => ({
+        url: "/whyUs",
+        method: HttpMethod.GET,
+      }),
     }),
-    getSolutions : builder.query({
-        query: ()=> ({
-            url: '/getSolutions',
-            method: HttpMethod.GET
-        })
+    getAdminWhyUs: builder.query({
+      query: () => ({
+        url: "/admin/whyUs",
+        method: HttpMethod.GET,
+      }),
     }),
-    addServices : builder.mutation({
-        query: (postData)=> ({
-            url: '/addServices',
-            method: HttpMethod.POST,
-            body: postData
-        })
+    getServices: builder.query({
+      query: () => ({
+        url: "/getServices",
+        method: HttpMethod.GET,
+      }),
     }),
-    addSolutions : builder.mutation({
-        query: (postData)=> ({
-            url: '/addSolutions',
-            method: HttpMethod.POST,
-            body: postData
-        })
+    getAdminServices: builder.query({
+      query: () => ({
+        url: "/admin/getServices",
+        method: HttpMethod.GET,
+      }),
     }),
-    sendMail : builder.mutation({
-        query: (postData) => ({
-            url: "/sendMail",
-            method: HttpMethod.POST,
-            body: postData
-        })
+    getSolutions: builder.query({
+      query: () => ({
+        url: "/getSolutions",
+        method: HttpMethod.GET,
+      }),
     }),
-    editAboutCompany : builder.mutation({
-        query: (postData)=> ({
-            url: "/editAboutCompany",
-            method: HttpMethod.PUT,
-            body: postData
-        })
+    getAdminSolutions: builder.query({
+      query: () => ({
+        url: "/admin/getSolutions",
+        method: HttpMethod.GET,
+      }),
     }),
-    editWhyUs : builder.mutation({
-        query: (postData)=> ({
-            url: "/editWhyUs",
-            method: HttpMethod.PUT,
-            body: postData
-        })
+    addServices: builder.mutation({
+      query: (postData) => ({
+        url: "/admin/addServices",
+        method: HttpMethod.POST,
+        body: postData,
+      }),
     }),
-    deleteSolution : builder.mutation({
-        query: (id)=> ({
-            url: `/deleteSolution/${id}`,
-            method: HttpMethod.DELETE,
-        })
+    addSolutions: builder.mutation({
+      query: (postData) => ({
+        url: "/admin/addSolutions",
+        method: HttpMethod.POST,
+        body: postData,
+      }),
     }),
-    deleteService : builder.mutation({
-        query: (id)=> ({
-            url: `/deleteService/${id}`,
-            method: HttpMethod.DELETE
-        })
+    sendMail: builder.mutation({
+      query: (postData) => ({
+        url: "/sendMail",
+        method: HttpMethod.POST,
+        body: postData,
+      }),
     }),
-    login : builder.mutation({
-        query: (postData)=> ({
-            url: '/login',
-            method: HttpMethod.POST,
-            body: postData
-        })
+    editAboutCompany: builder.mutation({
+      query: (postData) => ({
+        url: "/admin/editAboutCompany",
+        method: HttpMethod.PUT,
+        body: postData,
+      }),
     }),
-    logout : builder.mutation({
-        query : ()=> ({
-            url : '/logout',
-            method: HttpMethod.POST,
-        })
-    })
+    editWhyUs: builder.mutation({
+      query: (postData) => ({
+        url: "/admin/editWhyUs",
+        method: HttpMethod.PUT,
+        body: postData,
+      }),
+    }),
+    deleteSolution: builder.mutation({
+      query: (id) => ({
+        url: `/admin/deleteSolution/${id}`,
+        method: HttpMethod.DELETE,
+      }),
+    }),
+    deleteService: builder.mutation({
+      query: (id) => ({
+        url: `/admin/deleteService/${id}`,
+        method: HttpMethod.DELETE,
+      }),
+    }),
+    login: builder.mutation({
+      query: (postData) => ({
+        url: "/login",
+        method: HttpMethod.POST,
+        body: postData,
+      }),
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/logout",
+        method: HttpMethod.POST,
+      }),
+    }),
+    changePass: builder.mutation({
+      query: (data) => ({
+        url: "/admin/changePass",
+        method: HttpMethod.PUT,
+        body: data,
+      }),
+    }),
+    forgetPasswordRequest: builder.mutation({
+      query: (email) => ({
+        url: "/admin/forgetPasswordRequest",
+        method: HttpMethod.POST,
+        body: email,
+      }),
+    }),
+    resetPass: builder.mutation({
+      query: (data) => ({
+        url: "/admin/resetPass",
+        method: HttpMethod.POST,
+        body: data,
+      }),
+    }),
   }),
 });
 
 export const {
-    useGetAboutCompanyQuery,
-    useGetServicesQuery,
-    useGetSolutionsQuery,
-    useGetWhyUsQuery,
-    useAddServicesMutation,
-    useAddSolutionsMutation,
-    useEditAboutCompanyMutation,
-    useEditWhyUsMutation,
-    useDeleteServiceMutation,
-    useDeleteSolutionMutation,
-    useSendMailMutation,
-    useLoginMutation,
-    useLogoutMutation
+  useGetAboutCompanyQuery,
+  useGetAdminAboutCompanyQuery,
+  useGetServicesQuery,
+  useGetAdminServicesQuery,
+  useGetSolutionsQuery,
+  useGetAdminSolutionsQuery,
+  useGetWhyUsQuery,
+  useGetAdminWhyUsQuery,
+  useAddServicesMutation,
+  useAddSolutionsMutation,
+  useEditAboutCompanyMutation,
+  useEditWhyUsMutation,
+  useDeleteServiceMutation,
+  useDeleteSolutionMutation,
+  useSendMailMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useChangePassMutation,
+  useResetPassMutation,
+  useForgetPasswordRequestMutation
 } = apiSlices;
