@@ -1,77 +1,24 @@
-"use client"
-
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import CarouselCard from '../CarouselCard/carouselCard'
-
-// Sample data for carousel items
-const carouselItems = [
-  {
-    id: 1,
-    title: "Premium Headphones",
-    description: "Noise-cancelling with superior sound quality",
-    price: "$299",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 2,
-    title: "Smart Watch",
-    description: "Track your fitness and stay connected",
-    price: "$199",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 3,
-    title: "Wireless Earbuds",
-    description: "Crystal clear audio with long battery life",
-    price: "$149",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 4,
-    title: "Bluetooth Speaker",
-    description: "Powerful sound in a compact design",
-    price: "$89",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 5,
-    title: "Laptop Stand",
-    description: "Ergonomic design for better posture",
-    price: "$49",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 6,
-    title: "Mechanical Keyboard",
-    description: "Tactile feedback for faster typing",
-    price: "$129",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 7,
-    title: "Wireless Mouse",
-    description: "Precise tracking and comfortable grip",
-    price: "$59",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 8,
-    title: "USB-C Hub",
-    description: "Connect all your devices with ease",
-    price: "$79",
-    image: "/placeholder.svg?height=200&width=200",
-  },
-]
+import { useGetSolutionsQuery } from "../../../store/slices/apiSlices"
+import { IService } from "../../../types"
 
 export default function CustomCarousel() {
+
+  const { data: solutions} = useGetSolutionsQuery(undefined);
+
+  const solutionsArray = solutions?.solutions
+
+  console.log("solutions", solutions)
+
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [visibleItems, setVisibleItems] = useState(4) // Default for desktop
   const carouselRef = useRef<HTMLDivElement>(null)
   
-  const totalItems = carouselItems.length
+  const totalItems = solutionsArray?.length
 
   // Function to handle window resize and set appropriate number of visible items
   useEffect(() => {
@@ -102,16 +49,16 @@ export default function CustomCarousel() {
   }, [])
 
   // Function to handle moving to next item
-  const handleNextItem = () => {
-    if (isAnimating) return
+  const handleNextItem = useCallback(() => {
+    if (isAnimating) return;
 
-    setIsAnimating(true)
-    setCurrentItemIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1))
+    setIsAnimating(true);
+    setCurrentItemIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
 
     setTimeout(() => {
-      setIsAnimating(false)
-    }, 500)
-  }
+      setIsAnimating(false);
+    }, 500);
+  }, [isAnimating, totalItems]);
 
   // Function to handle moving to previous item
   const handlePrevItem = () => {
@@ -134,7 +81,7 @@ export default function CustomCarousel() {
     }, 3000) // Auto rotate every 3 seconds
 
     return () => clearInterval(interval)
-  }, [currentItemIndex, isPaused, isAnimating])
+  }, [currentItemIndex, isPaused, isAnimating, handleNextItem])
 
   // Pause auto-rotation when hovering
   const handleMouseEnter = () => {
@@ -168,7 +115,7 @@ export default function CustomCarousel() {
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${(currentItemIndex * 100) / visibleItems}%)` }}
         >
-          {carouselItems.map((item, index) => (
+          {solutionsArray?.map((item: IService, index:number) => (
             <div 
               key={index} 
               className={`${getItemWidthClass()} flex-none p-2 sm:p-3`}
@@ -177,7 +124,7 @@ export default function CustomCarousel() {
                 transition: "transform 0ms" 
               }}
             >
-              <CarouselCard/>
+              <CarouselCard title={item?.title} image={item?.image} />
             </div>
           ))}
         </div>

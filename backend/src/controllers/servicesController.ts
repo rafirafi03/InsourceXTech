@@ -19,7 +19,7 @@ export const getServices = async (req: Request, res: Response): Promise<void> =>
 // Add new service
 export const addService = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title } = req.body;
+    const { title, content } = req.body;
     console.log('eghtii req bodyy:', req.body)
 
     if(!req.file) {
@@ -32,6 +32,7 @@ export const addService = async (req: Request, res: Response): Promise<void> => 
     
     const newService = await Service.create({
       title,
+      content,
       image : imageUrl
     });
     

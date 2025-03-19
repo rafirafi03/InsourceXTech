@@ -96,6 +96,9 @@ export default function Services() {
                       Title
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Content
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Action
                     </th>
                   </tr>
@@ -116,6 +119,10 @@ export default function Services() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {service.title}
                       </td>
+                      <td className="px-6 py-4 whitespace-normal break-words text-sm font-medium text-gray-900">
+                        {service?.content}
+                      </td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <button
                           onClick={() => handleDelete(service._id)}

@@ -14,6 +14,7 @@ export default function AddService() {
   const [formData, setFormData] = useState<IServiceFormData>({
     title: "",
     image: null,
+    content: ""
   });
   
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -49,6 +50,7 @@ export default function AddService() {
       // Create FormData object to handle file upload
       const submitData = new FormData();
       submitData.append("title", formData.title);
+      submitData.append('content', formData.content)
       if (formData.image) {
         submitData.append("image", formData.image);
       }
@@ -69,7 +71,7 @@ export default function AddService() {
       }
       
       // Reset form after submission
-      setFormData({ title: "", image: null });
+      setFormData({ title: "", image: null, content: "" });
       setPreviewUrl(null);
       
     } catch (error) {
@@ -110,6 +112,24 @@ export default function AddService() {
                 id="title"
                 name="title"
                 value={formData.title}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter service title"
+              />
+            </div>
+            <div className="mb-6">
+              <label 
+                htmlFor="content" 
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Content
+              </label>
+              <textarea
+                id="content"
+                name="content"
+                value={formData.content}
+                rows={4}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

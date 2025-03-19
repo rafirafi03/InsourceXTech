@@ -99,7 +99,7 @@ ${message}
     await sendEmail({
       from: email, // Should use authenticated email address
       replyTo: email,
-      to: process.env.MAIL_TO || "ahamedrafirafi03@gmail.com",
+      to: process.env.MAIL_TO || "info@insourcextech.com",
       subject: subject || `New contact from ${name}`,
       text: textContent,
       html: htmlContent,

@@ -43,7 +43,7 @@ const ContactComponent = () => {
   };
 
   return (
-    <section className="py-16">
+    <section id="contact" className="py-16 scroll-mt-15">
       <div className="container mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">

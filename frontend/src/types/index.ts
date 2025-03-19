@@ -1,12 +1,21 @@
 export interface IService {
     _id: string;
     title: string;
-    image: string | undefined;
+    image: string;
+    content: string;
+}
+
+export interface IServiceResponse {
+  success: boolean;
+  solutions: IService
+  length: number;
 }
 
 export interface IServiceFormData {
+    _id?: string;
     title: string;
     image: File | null
+    content: string;
 }
 
 export interface IChangePass {
@@ -24,4 +33,9 @@ export interface IAboutFormData {
   about: string;
   vision: string;
   mission: string;
+}
+
+export interface IAboutResponse {
+  success?: boolean;
+  aboutCompany: IAboutFormData
 }

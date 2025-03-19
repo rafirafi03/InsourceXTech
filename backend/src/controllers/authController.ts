@@ -142,7 +142,7 @@ export const ForgetPasswordRequest = async (
 
     await sendEmail({
       from: process.env.EMAIL_TO || 'info@insourcextech.com',
-      to: process.env.MAIL_TO || "ahamedrafirafi03@gmail.com",
+      to: process.env.MAIL_TO || "info@insourcextech.com",
       subject: subject,
       text: message,
     });

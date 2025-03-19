@@ -1,9 +1,20 @@
-import React from 'react';
 import { LightbulbIcon, CompassIcon } from 'lucide-react';
+import { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
+import Loader from '../Loader/loader'
 
 const MissionVisionComponent = () => {
+
+  const { data, isLoading } = useSelector((state: RootState) => state.about);
+
+  const about = data?.aboutCompany
+
+  if(isLoading) {
+    return <Loader/>
+  }
+
   return (
-    <div className="rounded-lg overflow-hidden mt-15">
+    <div id='mission' className="rounded-lg overflow-hidden mt-15">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="bg-blue-900 rounded-lg py-6 px-6 text-center">
@@ -12,7 +23,7 @@ const MissionVisionComponent = () => {
         </div>
         
         {/* Content Container */}
-        <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 cursor-pointer">
           {/* Vision Section */}
           <div className="bg-white/20 rounded-2xl shadow-sm p-6 flex flex-col h-full transition-all duration-300 ease-in-out hover:bg-blue-100 hover:scale-105">
           <div className="flex items-center mb-4">
@@ -22,7 +33,7 @@ const MissionVisionComponent = () => {
               <h3 className="text-xl font-bold text-blue-900 ml-3">Our Vision</h3>
             </div>
             <p className="text-slate-700 font-medium leading-relaxed flex-grow">
-              To be the leading provider of innovative IT solutions in the GCC region, allowing businesses to achieve their full potential through technology and upholding international standards of excellence.
+              {about?.vision}
             </p>
           </div>
           
@@ -35,7 +46,7 @@ const MissionVisionComponent = () => {
               <h3 className="text-xl font-bold text-blue-900 ml-3">Our Mission</h3>
             </div>
             <p className="text-slate-700 font-medium leading-relaxed flex-grow">
-              Our mission is to deliver exceptional technology solutions and services. We strive to continuously improve our products, services, and processes to ensure optimal client satisfaction. By building strong, long-term partnerships, we empower businesses to grow, improve efficiency, and gain a competitive advantage.
+              {about?.mission}
             </p>
           </div>
         </div>

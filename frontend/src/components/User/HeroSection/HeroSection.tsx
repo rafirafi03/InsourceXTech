@@ -1,51 +1,70 @@
+import { scrollHelper } from "../../../utils/scrollHelper";
+
 const HeroSection = () => {
+  const handleScroll = (section: string) => {
+    scrollHelper(section);
+  };
+
   return (
-    <section className="relative overflow-hidden px-3 py-5">
-      {/* Background Design Element */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-100 rounded-full opacity-50"></div>
-      {/* <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-indigo-50 rounded-full opacity-50"></div>    */}
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden !p-0">
+      {/* Background Rounded Elements (Behind Text) */}
+      <div
+        className="absolute -z-10 top-2/5 bg-indigo-100 rounded-full opacity-50 transform -translate-x-1/2"
+        style={{
+          width: "24rem",
+          height: "24rem",
+          animation: "pulse1 6s ease-in-out infinite alternate",
+        }}
+      />
+      <div
+        className="absolute -z-10 right-90 bottom-2/5 bg-blue-200 rounded-full opacity-50 transform translate-x-1/2"
+        style={{
+          width: "20rem",
+          height: "20rem",
+          animation: "pulse2 8s ease-in-out infinite alternate",
+        }}
+      />
 
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="flex flex-col md:flex-row items-center">
-          {/* Content */}
-          <div className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-black mb-4">
-              Transforming Business Through
-              <span className="text-blue-400"> Innovative Technology</span>
-            </h1>
-            <p className="text-lg mb-10 font-sans">
-              At Insoure X Tech, we deliver cutting-edge solutions that drive
-              growth, efficiency, and digital transformation for businesses of
-              all sizes.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-3 bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-4xl hover:from-blue-600 hover:to-blue-400 transition-colors duration-300 font-medium shadow-md">
-                {" "}
-                Explore Services
-              </button>
-              <button className="px-8 py-3 border border-blue-300 rounded-4xl hover:bg-white hover:text-blue-500 transition-colors duration-300 font-medium">
-                Learn More
-              </button>
-            </div>
-          </div>
+      {/* Hero Content */}
+      <div className="max-w-3xl container mx-auto !px-0">
+        <h1 className="text-4xl md:text-6xl font-bold text-black mb-6 leading-tight relative">
+          <span
+            className="inline-block"
+            style={{ animation: "fadeInUp 1.6s ease-out forwards" }}
+          >
+            Transforming Business Through
+          </span>
+          <br />
+          <span
+            className="text-blue-600 inline-block"
+            style={{
+              animation: "fadeInSlide 1.9s ease-out 0.5s forwards",
+              opacity: 0,
+              transform: "translateY(20px)",
+            }}
+          >
+            Innovative Technology
+          </span>
+        </h1>
+        <p className="text-lg md:text-xl text-black/50 mb-8 font-sans font-medium relative">
+          At Insoure X Tech, we deliver cutting-edge solutions that drive
+          growth, efficiency, and digital transformation for businesses of all
+          sizes.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4 relative">
+          <button
+            onClick={() => handleScroll("services")}
+            className="px-8 py-3 bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-full hover:from-blue-600 hover:to-blue-400 transition-all duration-300 font-medium shadow-md cursor-pointer transform hover:scale-105"
+          >
+            Explore Services
+          </button>
 
-          {/* Image */}
-          <div className="w-full md:w-1/2">
-            <div className="relative">
-              {/* Abstract tech shape decorations */}
-              <div className="absolute -top-6 -left-6 w-20 h-20 bg-blue-500 rounded-lg opacity-20 transform rotate-12"></div>
-              <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-indigo-500 rounded-full opacity-20"></div>
-
-              {/* Image container with shadow and border */}
-              <div className="relative rounded-lg shadow-xl overflow-hidden border-4 border-white">
-                <img
-                  src="/homeImage.png"
-                  alt="Insoure X Tech team working on digital solutions"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
+          <button
+            onClick={() => handleScroll("about")}
+            className="px-8 py-3 border border-blue-500 text-blue-600 rounded-full hover:bg-white hover:text-blue-700 transition-all duration-300 font-medium shadow-sm cursor-pointer transform hover:scale-105"
+          >
+            About Us
+          </button>
         </div>
       </div>
     </section>
