@@ -47,6 +47,11 @@ export default function AddService() {
     
     const toastLoading = toast.loading('submitting...')
     try {
+
+      if(!formData.content) {
+        toast.error('content required')
+        return
+      }
       // Create FormData object to handle file upload
       const submitData = new FormData();
       submitData.append("title", formData.title);
