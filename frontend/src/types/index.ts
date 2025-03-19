@@ -15,7 +15,7 @@ export interface IServiceFormData {
     _id?: string;
     title: string;
     image: File | null
-    content: string;
+    content?: string;
 }
 
 export interface IChangePass {
