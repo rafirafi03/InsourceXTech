@@ -18,7 +18,7 @@ connectDB()
 app.use(helmet());
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://insourcextech.com", "https://www.insourcextech.com"],
     credentials: true,
   })
 );
