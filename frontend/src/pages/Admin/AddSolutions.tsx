@@ -69,7 +69,6 @@ export default function AddService() {
         }
         toast.error("something went wrong!");
       }
-      console.log("Service added successfully", res);
       
       // Reset form after submission
       setFormData({ title: "", image: null });

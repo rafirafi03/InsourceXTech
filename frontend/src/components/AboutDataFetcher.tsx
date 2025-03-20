@@ -11,7 +11,6 @@ const AboutDataFetcher = () => {
   useEffect(() => {
     dispatch(setLoading(isLoading));
     if (data) {
-        console.log("aoububobudataat", data)
       dispatch(setAboutData(data));
     }
   }, [data, isLoading, dispatch]);

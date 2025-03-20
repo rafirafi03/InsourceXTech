@@ -20,14 +20,12 @@ export const getServices = async (req: Request, res: Response): Promise<void> =>
 export const addService = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title, content } = req.body;
-    console.log('eghtii req bodyy:', req.body)
 
     if(!req.file) {
       res.status(400).json({ success: false, message: 'No image uploaded' });
       return;
     }
 
-    console.log("req.fileee", req.file)
     const imageUrl = req.file.path;
     
     const newService = await Service.create({

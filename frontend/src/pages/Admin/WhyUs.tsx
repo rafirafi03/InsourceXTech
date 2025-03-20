@@ -66,7 +66,6 @@ export default function WhyUs() {
         toast.error("something went wrong!");
       }
 
-      console.log(`Form ${index + 1} updated successfully,${res}`);
     } catch (error) {
       toast.dismiss(loadingToast);
       toast.error("something went wrong");

@@ -26,7 +26,6 @@ export const addSolution = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    console.log("req.fileee", req.file)
     const imageUrl = req.file.path;
     
     const newSolution = await Solution.create({

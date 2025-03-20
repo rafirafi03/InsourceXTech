@@ -10,8 +10,6 @@ export default function CustomCarousel() {
 
   const solutionsArray = solutions?.solutions
 
-  console.log("solutions", solutions)
-
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isPaused, setIsPaused] = useState(false)

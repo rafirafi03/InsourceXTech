@@ -30,7 +30,6 @@ export default function App() {
     const loadinToast = toast.loading("logging in...");
     try {
       const res = await login(formData).unwrap();
-      console.log("res:", res);
 
       toast.dismiss(loadinToast);
 

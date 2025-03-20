@@ -5,10 +5,8 @@ import AboutCompany from '../models/aboutModel';
 // Get about company
 export const getAboutCompany = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log('giii')
     const aboutCompany = await AboutCompany.findOne();
 
-    console.log('about', aboutCompany)
     
     if (!aboutCompany) {
       res.status(404).json({ success: false, message: 'About company information not found' });

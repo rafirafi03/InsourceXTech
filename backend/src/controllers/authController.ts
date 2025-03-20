@@ -16,7 +16,6 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
       // Compare entered password with hashed password
       const isMatch = await bcrypt.compare(password, admin.password);
       if (!isMatch) {
-        console.log("no match");
         res
           .status(HttpStatusCode.UNAUTHORIZED)
           .json({ success: false, error: "Invalid credentials" });
@@ -76,7 +75,6 @@ export const ChangePass = async (
 ): Promise<void> => {
   try {
     const { id, currentPass, newPass } = req.body;
-    console.log("req.body:", req.body);
 
     const admin = await Admin.findById({ _id: id });
 
@@ -122,7 +120,6 @@ export const ForgetPasswordRequest = async (
 
     const admin = await Admin.findOne({ email });
 
-    console.log("admin:0", admin);
 
     if (!admin) {
       res

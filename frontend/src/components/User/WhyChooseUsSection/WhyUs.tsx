@@ -6,8 +6,6 @@ const WhyChooseUsComponent = () => {
 
   const {data, isLoading} = useGetWhyUsQuery(undefined);
 
-  console.log("whyus data:", data)
-
   if(isLoading) {
     return <Loading/>
   }

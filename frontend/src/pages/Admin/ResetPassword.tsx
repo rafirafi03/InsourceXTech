@@ -30,7 +30,6 @@ export default function Page() {
       } else {
         toast.error(<b>Failed to change password!</b>);
       }
-      console.log(response);
     } catch (error) {
       toast.dismiss();
       toast.error(<b>Error occured!</b>);

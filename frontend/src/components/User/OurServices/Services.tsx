@@ -10,8 +10,6 @@ export default function App() {
     return <Loader/>
   }
 
-  console.log("services:", services);
-
   return (
     <div id="services" className="scroll-mt-25">
       <div className="text-center m-16">

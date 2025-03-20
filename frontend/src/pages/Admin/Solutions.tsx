@@ -55,7 +55,6 @@ export default function Services() {
         toast.error("something went wrong!");
       }
 
-      console.log("res:", res)
       // If you want to update the UI immediately without waiting for a refetch
     } catch (error) {
       toast.dismiss(loadingToast)

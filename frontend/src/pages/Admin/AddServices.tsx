@@ -63,7 +63,6 @@ export default function AddService() {
       // When you have the API hook:
       const res = await addService(submitData).unwrap();
       toast.dismiss(toastLoading)
-      console.log("Service added successfully", res);
       if(res.success) {
         toast.success('added successfully')
       } else {

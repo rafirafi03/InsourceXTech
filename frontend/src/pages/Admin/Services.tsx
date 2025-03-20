@@ -56,7 +56,6 @@ export default function Services() {
         toast.error("something went wrong!");
       }
 
-      console.log("res:", res);
     } catch (error) {
       toast.dismiss(loadingToast);
       toast.error("something went wrong");

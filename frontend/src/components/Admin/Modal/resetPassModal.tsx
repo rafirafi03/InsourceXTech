@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForgetPasswordRequestMutation } from "../../../store/slices/apiSlices";
+import { toast } from "react-toastify";
 
 interface pageProps {
   isOpen : boolean;
@@ -21,7 +22,9 @@ export default function Page({isOpen, isClose}: pageProps) {
 
     try {
       const response = await forgetPasswordRequest({ email }).unwrap();
-      console.log(response);
+      if(response.success) {
+        toast.success('link sent to your mail. please check')
+      }
     } catch (err) {
       console.log(err)
       setError("An error occurred. Please try again.");

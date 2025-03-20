@@ -9,8 +9,6 @@ export default function AboutUsSection() {
 
   const aboutData = data?.aboutCompany;
 
-  console.log("about:",data)
-
   const handleScroll = (section: string)=> {
     scrollHelper(section)
   }
