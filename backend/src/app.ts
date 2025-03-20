@@ -18,13 +18,15 @@ connectDB()
 app.use(helmet());
 app.use(
   cors({
-    origin: ["https://insourcextech.com", "https://www.insourcextech.com"],
+    origin: ["https://www.insourcextech.com", "https://insourcextech.com", "http://localhost:5173"],
     credentials: true,
   })
 );
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser())
+app.use(express.json({ limit: "50mb" }));  
+
 
 // Routes
 app.use("/api", routes);

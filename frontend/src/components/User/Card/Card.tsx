@@ -29,7 +29,7 @@ export default function Card({ title, image, content }: PageProps) {
             width="70"
             className="mb-3 rounded-xl"
           />
-          <h5 className="text-md font-extrabold text-blue-900 text-center">
+          <h5 className="text-md font-extrabold text-blue-900 text-center uppercase">
             {title}
           </h5>
         </div>
