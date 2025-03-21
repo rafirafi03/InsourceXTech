@@ -19,6 +19,7 @@ app.use(helmet());
 app.use(
   cors({
     origin: ["https://www.insourcextech.com", "https://insourcextech.com", "http://localhost:5173"],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
 );
