@@ -1,8 +1,5 @@
 // src/utils/emailService.ts
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 interface EmailOptions {
   from: string;
@@ -14,15 +11,13 @@ interface EmailOptions {
 }
 
 export const sendEmail = async (options: EmailOptions): Promise<void> => {
-  console.log("inside sendmial");
-  const mail = process.env.EMAIL_USER;
-  const pass = process.env.EMAIL_PASS
+
   // Create transporter
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: mail,
-      pass: pass,
+      user: "khizer.hyd@gmail.com",
+      pass: "mitb xtpb frai bwew",
     },
   });
 
