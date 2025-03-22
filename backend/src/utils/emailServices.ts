@@ -1,11 +1,11 @@
 // src/utils/emailService.ts
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 interface EmailOptions {
-  from : string;
+  from: string;
   replyTo?: string;
   to: string;
   subject: string;
@@ -14,14 +14,14 @@ interface EmailOptions {
 }
 
 export const sendEmail = async (options: EmailOptions): Promise<void> => {
+  const mail = process.env.EMAIL_USER;
+  const pass = process.env.EMAIL_PASS
   // Create transporter
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.EMAIL_SECURE === 'true',
+    service: "gmail",
     auth: {
-      user: process.env.EMAIL_USER || "khizerabdulsattar@gmail.com",
-      pass: process.env.EMAIL_PASS || "wzir dxcy knho quwm",
+      user: mail,
+      pass: pass,
     },
   });
 
