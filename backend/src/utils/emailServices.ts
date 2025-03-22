@@ -1,5 +1,8 @@
 // src/utils/emailService.ts
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 interface EmailOptions {
   from : string;
@@ -17,8 +20,8 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: process.env.EMAIL_SECURE === 'true',
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      user: process.env.EMAIL_USER || "khizerabdulsattar@gmail.com",
+      pass: process.env.EMAIL_PASS || "wzir dxcy knho quwm",
     },
   });
 
