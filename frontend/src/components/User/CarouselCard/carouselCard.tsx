@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 interface CarouselCardProps {
   title: string;
   image: string;
@@ -5,26 +7,49 @@ interface CarouselCardProps {
 
 const CarouselCard = ({ title, image }: CarouselCardProps) => {
   return (
-    <div className="group relative w-full h-80 overflow-hidden rounded-xl bg-white/10 hover:bg-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out border border-blue-100 cursor-pointer">
+    <motion.div
+      className="group relative w-full h-80 overflow-hidden rounded-xl bg-white/10 hover:bg-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out border border-blue-100 cursor-pointer"
+      whileHover={{ scale: 1.05 }} // Scale up slightly on hover
+      initial={{ opacity: 0, y: 20 }} // Initial animation state
+      whileInView={{ opacity: 1, y: 0 }} // Animate when in view
+      viewport={{ once: true, amount: 0.5 }} // Trigger animation only once
+      transition={{ duration: 0.5, ease: "easeOut" }} // Smooth transition
+    >
       {/* Card Image with Overlay Gradient */}
       <div className="h-48 overflow-hidden">
         <div className="absolute inset-0 opacity-60 z-10 group-hover:opacity-70 transition-opacity duration-300"></div>
-        <img 
-          src={image || "/api/placeholder/400/320"} 
-          alt={title} 
+        <motion.img
+          src={image || "/api/placeholder/400/320"}
+          alt={title}
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          whileHover={{ scale: 1.1 }} // Scale up image on hover
+          transition={{ duration: 0.5, ease: "easeOut" }}
         />
       </div>
-      
+
       {/* Card Content */}
-      <div className="relative z-20 p-5 h-32 overflow-hidden flex flex-col items-center justify-center">
+      <motion.div
+        className="relative z-20 p-5 h-32 overflow-hidden flex flex-col items-center justify-center"
+        initial={{ opacity: 0 }} // Initial animation state
+        whileInView={{ opacity: 1 }} // Fade in when in view
+        viewport={{ once: true, amount: 0.5 }} // Trigger animation only once
+        transition={{ duration: 0.5, delay: 0.2 }} // Delay for staggered effect
+      >
         {/* Title with animation and truncation */}
-        <h3 className="text-lg font-bold text-blue-900 mb-3 group-hover:scale-105 transform transition-transform duration-300 line-clamp-2 overflow-ellipsis text-center">{title}</h3>
-        
+        <motion.h3
+          className="text-lg font-bold text-blue-900 mb-3 group-hover:scale-105 transform transition-transform duration-300 line-clamp-2 overflow-ellipsis text-center"
+          whileHover={{ scale: 1.05 }} // Scale up title on hover
+        >
+          {title}
+        </motion.h3>
+
         {/* Centered Text Line */}
-        <div className="w-16 h-1 bg-blue-900 rounded mb-3 mx-auto group-hover:bg-blue-700 transition-all duration-300 group-hover:w-24"></div>
-      </div>
-    </div>
+        <motion.div
+          className="w-16 h-1 bg-blue-900 rounded mb-3 mx-auto group-hover:bg-blue-700 transition-all duration-300 group-hover:w-24"
+          whileHover={{ width: "6rem" }} // Animate width on hover
+        />
+      </motion.div>
+    </motion.div>
   );
 };
 
