@@ -47,7 +47,7 @@ const HeroSection = () => {
           </span>
         </h1>
         <p className="text-lg md:text-xl text-black/50 mb-8 font-sans font-medium relative">
-          At Insoure X Tech, we deliver cutting-edge solutions that drive
+          At Insource X Tech, we deliver cutting-edge solutions that drive
           growth, efficiency, and digital transformation for businesses of all
           sizes.
         </p>
