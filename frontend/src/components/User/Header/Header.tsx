@@ -26,9 +26,8 @@ const Header = () => {
               alt="insourcextech"
               className="w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12"
             />
-            <div className="text-md sm:text-xl md:text-2xl font-bold tracking-tighter">
-              <span className="text-black">Insource</span>
-              <span className="text-blue-500"> X </span>
+            <div className="text-md sm:text-xl md:text-2xl mx-4 font-bold tracking-tighter">
+              <span className="text-blue-500">Insource Bridge </span>
               <span className="text-black">Technologies</span>
             </div>
           </div>
