@@ -58,7 +58,7 @@ export default function AboutUsSection() {
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <img
-                src="/Insourcextech.png"
+                src="/Insourcebridgetech.png"
                 alt="Insource X Technologies Team"
                 className="w-full h-full object-cover"
               />
