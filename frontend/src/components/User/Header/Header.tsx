@@ -33,7 +33,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
+          <nav className="hidden lg:flex space-x-1">
             {[ "Solutions", "Services", "About", "Mission", "Contact"].map((item) => (
               <button
                 key={item}
@@ -49,7 +49,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={toggleMenu}
               className="p-2 rounded-md hover:bg-blue-700 transition-colors duration-300"
@@ -61,7 +61,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4">
+          <nav className="lg:hidden mt-4 pb-4">
             <div className="flex flex-col space-y-2">
               {["Solutions", "Services", "About", "Mission", "Contact"].map((item) => (
                 <button

@@ -6,7 +6,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center overflow-hidden !p-0">
+    <section className="relative flex flex-col items-center justify-center text-center overflow-hidden pt-32 pb-14 md:pb-32">
       {/* Background Rounded Elements (Behind Text) */}
       <div
         className="absolute -z-10 top-2/5 bg-indigo-100 rounded-full opacity-50 transform -translate-x-1/2"
@@ -51,7 +51,7 @@ const HeroSection = () => {
           growth, efficiency, and digital transformation for businesses of all
           sizes.
         </p>
-        <div className="flex flex-wrap justify-center gap-4 relative">
+        <div className="flex flex-col md:flex-row justify-center gap-4 relative">
           <button
             onClick={() => handleScroll("services")}
             className="px-8 py-3 bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-full hover:from-blue-600 hover:to-blue-400 transition-all duration-300 font-medium shadow-md cursor-pointer transform hover:scale-105"

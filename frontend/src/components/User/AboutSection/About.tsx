@@ -22,7 +22,7 @@ export default function AboutUsSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3, // Stagger the animation of children
+        staggerChildren: 0.3,
       },
     },
   };
@@ -35,7 +35,7 @@ export default function AboutUsSection() {
   return (
     <motion.section
       id="about"
-      className="my-16 scroll-mt-35"
+      className="my-8 scroll-mt-35"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
@@ -45,7 +45,7 @@ export default function AboutUsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left side - Image */}
           <motion.div
-            className="relative mx-auto md:mx-0 mt-10 mb-16 md:mb-24 max-w-full"
+            className="relative mx-auto md:mx-0 mt-10 mb-8 md:mb-24 max-w-full"
             variants={itemVariants}
           >
             {/* White shadow element - Positioned outside parent and rotated */}

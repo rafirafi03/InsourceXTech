@@ -54,7 +54,7 @@ export default function Card({ title, image, content, index = 0 }: PageProps) {
       {/* Card Component with Animation */}
       <motion.div
         onClick={() => setModal(true)}
-        className="max-w-sm bg-white/30 rounded-2xl p-5 cursor-pointer"
+        className=" bg-white/30 rounded-2xl p-5 cursor-pointer"
         initial="hidden"
         whileInView="visible"
         whileHover="hover"

@@ -64,6 +64,7 @@ const Footer = () => {
         <div className="mt-8 pt-6 border-t border-slate-700 items-center">
 
           <p className="text-sm text-center text-slate-400">© {currentYear} {about?.name}. All rights reserved.</p>
+          <p className="text-sm text-center text-slate-400">Developed by <a className='text-blue-500' href="https://www.instagram.com/ra_fi_03/">Ahamad Rafi</a></p>
         </div>
       </div>
     </footer>
