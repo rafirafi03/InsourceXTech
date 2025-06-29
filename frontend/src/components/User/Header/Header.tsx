@@ -48,7 +48,7 @@ const Header = () => {
             </button> */}
           </nav>
 
-          {/* Mobile Menu Button  */}
+          {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <button
               onClick={toggleMenu}
