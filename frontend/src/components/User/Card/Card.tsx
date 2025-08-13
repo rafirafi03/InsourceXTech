@@ -1,20 +1,22 @@
-import { useState } from "react"
-import { motion } from "framer-motion"
-import Modal from "../Modal/Modal"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Modal from "../Modal/Modal";
+import { ISubService } from "../../../types";
 
 interface PageProps {
-  title: string
-  image: string
-  content: string
-  index?: number // Optional index for staggered animations
+  title: string;
+  image: string;
+  content: string;
+  subservices?: ISubService[];
+  index?: number; // Optional index for staggered animations
 }
 
-export default function Card({ title, image, content, index = 0 }: PageProps) {
-  const [isModal, setModal] = useState(false)
+export default function Card({ title, image, content, subservices = [], index = 0 }: PageProps) {
+  const [isModal, setModal] = useState(false);
 
   const onModalClose = () => {
-    setModal(false)
-  }
+    setModal(false);
+  };
 
   // Animation variants
   const cardVariants = {
@@ -47,7 +49,7 @@ export default function Card({ title, image, content, index = 0 }: PageProps) {
         duration: 0.4,
       },
     },
-  }
+  };
 
   return (
     <>
@@ -66,7 +68,10 @@ export default function Card({ title, image, content, index = 0 }: PageProps) {
       >
         <motion.div
           className="flex flex-col items-center"
-          whileTap={{ scale: 0.95, transition: { type: "spring", stiffness: 300, damping: 15 } }}
+          whileTap={{
+            scale: 0.95,
+            transition: { type: "spring", stiffness: 300, damping: 15 },
+          }}
         >
           <motion.img
             alt={`${title} image`}
@@ -89,12 +94,20 @@ export default function Card({ title, image, content, index = 0 }: PageProps) {
             animate={{
               opacity: 1,
               y: 0,
-              textShadow: ["0px 0px 0px rgba(0,0,0,0)", "0px 0px 2px rgba(0,0,0,0.2)", "0px 0px 0px rgba(0,0,0,0)"],
+              textShadow: [
+                "0px 0px 0px rgba(0,0,0,0)",
+                "0px 0px 2px rgba(0,0,0,0.2)",
+                "0px 0px 0px rgba(0,0,0,0)",
+              ],
             }}
             transition={{
               opacity: { duration: 0.5, delay: index * 0.15 + 0.5 },
               y: { duration: 0.5, delay: index * 0.15 + 0.5 },
-              textShadow: { duration: 3, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" },
+              textShadow: {
+                duration: 3,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "reverse",
+              },
             }}
           >
             {title}
@@ -103,8 +116,16 @@ export default function Card({ title, image, content, index = 0 }: PageProps) {
       </motion.div>
 
       {/* Show Modal if isModal is true */}
-      {isModal && <Modal isOpen={isModal} onClose={onModalClose} title={title} image={image} content={content} />}
+      {isModal && (
+        <Modal
+          isOpen={isModal}
+          onClose={onModalClose}
+          title={title}
+          image={image}
+          content={content}
+          subservices={subservices}
+        />
+      )}
     </>
-  )
+  );
 }
-

@@ -2,7 +2,14 @@ export interface IService {
     _id: string;
     title: string;
     image: string;
+    subservices: ISubService[]
     content: string;
+}
+
+export interface ISubService {
+  title: string;
+  description: string;
+  image: string;
 }
 
 export interface IServiceResponse {
