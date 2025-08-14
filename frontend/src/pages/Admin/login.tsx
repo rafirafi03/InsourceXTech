@@ -59,7 +59,7 @@ export default function App() {
             {/* Section Header */}
             <div className="text-center mb-8">
               <h2 className="text-4xl text-blue-900 font-bold mb-4">
-                Insource X Technologies
+                Insource Bridge Technologies
               </h2>
               <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
             </div>
