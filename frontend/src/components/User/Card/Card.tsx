@@ -56,7 +56,7 @@ export default function Card({ title, image, content, subservices = [], index = 
       {/* Card Component with Animation */}
       <motion.div
         onClick={() => setModal(true)}
-        className=" bg-white/30 rounded-2xl p-5 cursor-pointer"
+        className="bg-white/30 rounded-2xl overflow-hidden cursor-pointer"
         initial="hidden"
         whileInView="visible"
         whileHover="hover"
@@ -67,18 +67,17 @@ export default function Card({ title, image, content, subservices = [], index = 
         }}
       >
         <motion.div
-          className="flex flex-col items-center"
+          className="flex flex-col"
           whileTap={{
             scale: 0.95,
             transition: { type: "spring", stiffness: 300, damping: 15 },
           }}
         >
+          {/* Full width image at the top */}
           <motion.img
             alt={`${title} image`}
-            height="70"
             src={image}
-            width="70"
-            className="mb-3 rounded-xl"
+            className="w-full h-48 object-fill"
             initial={{ scale: 0.9, opacity: 0.8 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: index * 0.15 + 0.3 }}
@@ -88,30 +87,34 @@ export default function Card({ title, image, content, subservices = [], index = 
               transition: { duration: 0.7, ease: "easeInOut" },
             }}
           />
-          <motion.h5
-            className="text-md font-extrabold text-blue-900 text-center uppercase"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              textShadow: [
-                "0px 0px 0px rgba(0,0,0,0)",
-                "0px 0px 2px rgba(0,0,0,0.2)",
-                "0px 0px 0px rgba(0,0,0,0)",
-              ],
-            }}
-            transition={{
-              opacity: { duration: 0.5, delay: index * 0.15 + 0.5 },
-              y: { duration: 0.5, delay: index * 0.15 + 0.5 },
-              textShadow: {
-                duration: 3,
-                repeat: Number.POSITIVE_INFINITY,
-                repeatType: "reverse",
-              },
-            }}
-          >
-            {title}
-          </motion.h5>
+          
+          {/* Title section with padding */}
+          <div className="p-4">
+            <motion.h5
+              className="text-md font-extrabold text-blue-900 text-center uppercase"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                textShadow: [
+                  "0px 0px 0px rgba(0,0,0,0)",
+                  "0px 0px 2px rgba(0,0,0,0.2)",
+                  "0px 0px 0px rgba(0,0,0,0)",
+                ],
+              }}
+              transition={{
+                opacity: { duration: 0.5, delay: index * 0.15 + 0.5 },
+                y: { duration: 0.5, delay: index * 0.15 + 0.5 },
+                textShadow: {
+                  duration: 3,
+                  repeat: Number.POSITIVE_INFINITY,
+                  repeatType: "reverse",
+                },
+              }}
+            >
+              {title}
+            </motion.h5>
+          </div>
         </motion.div>
       </motion.div>
 

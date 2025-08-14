@@ -6,9 +6,8 @@ interface pageProps {
   title: string;
   image: string;
   content: string;
-  subservices?: ISubService[]
+  subservices?: ISubService[];
 }
-
 
 const ConfirmationModal = ({
   isOpen,
@@ -16,9 +15,8 @@ const ConfirmationModal = ({
   title,
   image,
   content,
-  subservices = []
+  subservices = [],
 }: pageProps) => {
-
   if (!isOpen) return null;
 
   return (
@@ -29,7 +27,7 @@ const ConfirmationModal = ({
           <img
             alt={title}
             src={image}
-            className="w-24 h-24 mb-3 rounded-xl object-cover"
+            className="w-full h-50 mb-3 rounded-xl object-fill"
           />
           <h5 className="text-lg font-extrabold text-blue-900 text-center">
             {title}
@@ -49,18 +47,20 @@ const ConfirmationModal = ({
               {subservices.map((sub, idx) => (
                 <div
                   key={idx}
-                  className="bg-blue-50 shadow-md rounded-xl p-4 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left hover:scale-[1.02] transition-all duration-300"
+                  className="bg-blue-50 shadow-md rounded-xl p-4 flex flex-col items-center text-center hover:scale-[1.02] transition-all duration-300"
                 >
                   <img
                     src={sub.image}
                     alt={sub.title}
-                    className="w-16 h-16 rounded-lg object-cover mb-3 sm:mb-0 sm:mr-4"
+                    className="w-full h-full rounded-lg object-fill mb-3"
                   />
                   <div>
                     <h6 className="text-md font-bold text-blue-900">
                       {sub.title}
                     </h6>
-                    <p className="text-sm text-gray-700 mt-1">{sub.description}</p>
+                    <p className="text-sm text-gray-700 mt-1">
+                      {sub.description}
+                    </p>
                   </div>
                 </div>
               ))}
