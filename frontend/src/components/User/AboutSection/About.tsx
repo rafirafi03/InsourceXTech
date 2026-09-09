@@ -5,10 +5,11 @@ import Loader from "../Loader/loader";
 import { RootState } from "../../../store/store";
 import { scrollHelper } from "../../../utils/scrollHelper";
 import { Reveal } from "../Motion/Reveal";
+import { pickAbout } from "../../../data/dummyContent";
 
 export default function AboutUsSection() {
   const { data, isLoading } = useSelector((state: RootState) => state.about);
-  const aboutData = data?.aboutCompany;
+  const aboutData = pickAbout(data?.aboutCompany);
 
   const handleScroll = (section: string) => {
     scrollHelper(section);

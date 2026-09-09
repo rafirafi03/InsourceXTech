@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import { RootState } from "../../../store/store";
 import Loader from "../Loader/loader";
 import { useSelector } from "react-redux";
+import { pickAbout } from "../../../data/dummyContent";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const { data, isLoading } = useSelector((state: RootState) => state.about);
-  const about = data?.aboutCompany;
+  const about = pickAbout(data?.aboutCompany);
 
   if (isLoading) {
     return <Loader />;

@@ -4,6 +4,7 @@ import { useGetWhyUsQuery } from "../../../store/slices/apiSlices";
 import Loading from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
 import { easeOutExpo } from "../../../utils/motion";
+import { pickWhyUs } from "../../../data/dummyContent";
 
 const WhyChooseUsComponent = () => {
   const { data, isLoading } = useGetWhyUsQuery(undefined);
@@ -12,28 +13,19 @@ const WhyChooseUsComponent = () => {
     return <Loading />;
   }
 
-  const features = [
-    {
-      icon: <Monitor className="h-6 w-6 text-white" />,
-      title: data?.whyUs[0]?.title,
-      description: data?.whyUs[0]?.description,
-    },
-    {
-      icon: <Target className="h-6 w-6 text-white" />,
-      title: data?.whyUs[1]?.title,
-      description: data?.whyUs[1]?.description,
-    },
-    {
-      icon: <Globe className="h-6 w-6 text-white" />,
-      title: data?.whyUs[2]?.title,
-      description: data?.whyUs[2]?.description,
-    },
-    {
-      icon: <Users className="h-6 w-6 text-white" />,
-      title: data?.whyUs[3]?.title,
-      description: data?.whyUs[3]?.description,
-    },
+  const whyUs = pickWhyUs(data?.whyUs);
+  const icons = [
+    <Monitor className="h-6 w-6 text-white" />,
+    <Target className="h-6 w-6 text-white" />,
+    <Globe className="h-6 w-6 text-white" />,
+    <Users className="h-6 w-6 text-white" />,
   ];
+
+  const features = whyUs.slice(0, 4).map((item, index) => ({
+    icon: icons[index] ?? icons[0],
+    title: item.title,
+    description: item.description,
+  }));
 
   return (
     <section className="section-block">

@@ -3,9 +3,14 @@ import { IService } from "../../../types";
 import Card from "../Card/Card";
 import Loader from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
+import { DUMMY_SERVICES, pickList } from "../../../data/dummyContent";
 
 export default function App() {
   const { data: services, isLoading } = useGetServicesQuery(undefined);
+  const serviceList = pickList(
+    services?.services as IService[] | undefined,
+    DUMMY_SERVICES
+  );
 
   if (isLoading) {
     return <Loader />;
@@ -25,7 +30,7 @@ export default function App() {
         </Reveal>
 
         <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {services?.services?.map((service: IService, index: number) => (
+          {serviceList.map((service: IService, index: number) => (
             <StaggerItem key={service._id}>
               <Card
                 title={service.title}

@@ -3,12 +3,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import CarouselCard from "../CarouselCard/carouselCard";
 import { useGetSolutionsQuery } from "../../../store/slices/apiSlices";
 import { IService } from "../../../types";
+import { DUMMY_SOLUTIONS, pickList } from "../../../data/dummyContent";
 
 export default function CustomCarousel() {
   const { data: solutions } = useGetSolutionsQuery(undefined);
   const solutionsArray: IService[] = useMemo(() => {
-    const list = solutions?.solutions;
-    return Array.isArray(list) ? list : [];
+    return pickList(
+      solutions?.solutions as IService[] | undefined,
+      DUMMY_SOLUTIONS
+    );
   }, [solutions]);
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
