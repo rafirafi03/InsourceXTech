@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CarouselCard from "../CarouselCard/carouselCard";
 import { useGetSolutionsQuery } from "../../../store/slices/apiSlices";
 import { IService } from "../../../types";
 import { DUMMY_SOLUTIONS, pickList } from "../../../data/dummyContent";
+
+const SWIPE_THRESHOLD = 48;
 
 export default function CustomCarousel() {
   const { data: solutions } = useGetSolutionsQuery(undefined);
@@ -19,8 +21,16 @@ export default function CustomCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const [visibleItems, setVisibleItems] = useState(2);
 
+  const pointerStart = useRef<{ x: number; y: number } | null>(null);
+  const swipeLocked = useRef<"x" | "y" | null>(null);
+  const isAnimatingRef = useRef(false);
+
   const totalItems = solutionsArray.length;
   const maxIndex = Math.max(0, totalItems - visibleItems);
+
+  useEffect(() => {
+    isAnimatingRef.current = isAnimating;
+  }, [isAnimating]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -38,39 +48,40 @@ export default function CustomCarousel() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Keep index in range when data or visible count changes
   useEffect(() => {
     setCurrentItemIndex((prev) => Math.min(prev, maxIndex));
   }, [maxIndex]);
 
+  const runSlide = useCallback((updater: (prev: number) => number) => {
+    if (isAnimatingRef.current) return;
+    isAnimatingRef.current = true;
+    setIsAnimating(true);
+    setCurrentItemIndex(updater);
+    window.setTimeout(() => {
+      isAnimatingRef.current = false;
+      setIsAnimating(false);
+    }, 500);
+  }, []);
+
   const goTo = useCallback(
     (index: number) => {
-      if (isAnimating || totalItems === 0) return;
+      if (totalItems === 0) return;
       const next = Math.max(0, Math.min(index, maxIndex));
       if (next === currentItemIndex) return;
-
-      setIsAnimating(true);
-      setCurrentItemIndex(next);
-      setTimeout(() => setIsAnimating(false), 500);
+      runSlide(() => next);
     },
-    [isAnimating, totalItems, maxIndex, currentItemIndex]
+    [totalItems, maxIndex, currentItemIndex, runSlide]
   );
 
   const handleNextItem = useCallback(() => {
-    if (isAnimating || totalItems === 0) return;
-
-    setIsAnimating(true);
-    setCurrentItemIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-    setTimeout(() => setIsAnimating(false), 500);
-  }, [isAnimating, totalItems, maxIndex]);
+    if (totalItems === 0) return;
+    runSlide((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  }, [totalItems, maxIndex, runSlide]);
 
   const handlePrevItem = useCallback(() => {
-    if (isAnimating || totalItems === 0) return;
-
-    setIsAnimating(true);
-    setCurrentItemIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
-    setTimeout(() => setIsAnimating(false), 500);
-  }, [isAnimating, totalItems, maxIndex]);
+    if (totalItems === 0) return;
+    runSlide((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  }, [totalItems, maxIndex, runSlide]);
 
   useEffect(() => {
     if (isPaused || totalItems <= visibleItems) return;
@@ -81,6 +92,56 @@ export default function CustomCarousel() {
 
     return () => clearInterval(interval);
   }, [isPaused, handleNextItem, totalItems, visibleItems]);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pointerStart.current = { x: e.clientX, y: e.clientY };
+    swipeLocked.current = null;
+    setIsPaused(true);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!pointerStart.current || swipeLocked.current) return;
+
+    const dx = e.clientX - pointerStart.current.x;
+    const dy = e.clientY - pointerStart.current.y;
+
+    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      swipeLocked.current = "x";
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    } else {
+      swipeLocked.current = "y";
+      pointerStart.current = null;
+    }
+  };
+
+  const finishSwipe = (clientX: number) => {
+    if (!pointerStart.current || swipeLocked.current !== "x") {
+      pointerStart.current = null;
+      swipeLocked.current = null;
+      return;
+    }
+
+    const dx = clientX - pointerStart.current.x;
+    pointerStart.current = null;
+    swipeLocked.current = null;
+
+    if (Math.abs(dx) < SWIPE_THRESHOLD || totalItems <= visibleItems) return;
+
+    if (dx < 0) handleNextItem();
+    else handlePrevItem();
+  };
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    finishSwipe(e.clientX);
+  };
+
+  const onPointerCancel = () => {
+    pointerStart.current = null;
+    swipeLocked.current = null;
+  };
 
   const getItemWidthClass = () => {
     switch (visibleItems) {
@@ -107,9 +168,17 @@ export default function CustomCarousel() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="relative -my-3 overflow-hidden py-3">
+      <div
+        className="relative -my-3 touch-pan-y overflow-hidden py-3 select-none"
+        data-lenis-prevent
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+        style={{ touchAction: "pan-y" }}
+      >
         <div
-          className="flex transition-transform duration-500 ease-out"
+          className="flex transition-transform duration-500 ease-out will-change-transform"
           style={{
             transform: `translateX(-${(currentItemIndex * 100) / visibleItems}%)`,
           }}

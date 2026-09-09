@@ -14,7 +14,7 @@ import SmoothScroll from "../../components/User/Motion/SmoothScroll";
 function App() {
   return (
     <SmoothScroll>
-      <div className="min-h-screen overflow-x-hidden bg-[var(--color-surface)]">
+      <div className="min-h-screen bg-[var(--color-surface)]">
         <Header />
         <main className="pb-2">
           <HeroSection />
