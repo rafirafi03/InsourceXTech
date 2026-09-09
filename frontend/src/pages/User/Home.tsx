@@ -9,30 +9,26 @@ import MissionVisionComponent from "../../components/User/VisionAndMission/visio
 import WhyChooseUsComponent from "../../components/User/WhyChooseUsSection/WhyUs";
 import Footer from "../../components/User/Footer/footer";
 import WhatsAppButton from "../../components/User/Watsapp/WatsappWidget";
+import SmoothScroll from "../../components/User/Motion/SmoothScroll";
 
 function App() {
   return (
-    <>
-      <Header />
-      <div className="pt-16">
-        <HeroSection />
-        <hr className="border-t border-black/20 w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto" />
-        <OurSoultions />
-        <hr className="border-t border-black/20 w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto" />
-        <Services />
-        <hr className="border-t border-black/20 w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto" />
-        <AboutUs />
-        <hr className="border-t border-black/20 w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto" />
-        <MissionVisionComponent />
-        <hr className="border-t border-black/20 w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto" />
-        <WhyChooseUsComponent />
-        <hr className="border-t border-black/20 w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto" />
-        <ContactComponent />
-        <hr className="border-t border-blue-900" />
-        <Footer />
+    <SmoothScroll>
+      <div className="min-h-screen overflow-x-hidden bg-[var(--color-surface)]">
+        <Header />
+        <main className="pb-2">
+          <HeroSection />
+          <OurSoultions />
+          <Services />
+          <AboutUs />
+          <MissionVisionComponent />
+          <WhyChooseUsComponent />
+          <ContactComponent />
+          <Footer />
+        </main>
+        <WhatsAppButton />
       </div>
-      <WhatsAppButton/>
-    </>
+    </SmoothScroll>
   );
 }
 

@@ -1,25 +1,42 @@
 const SpinnerLoader = () => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-400 via-blue-300 to-blue-900 bg-opacity-80">
-      <div className="relative w-16 h-16">
-        {/* Outer spinner */}
-        <div className="absolute inset-0 border-4 border-white/50 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+    <div
+      className="loader-overlay fixed inset-0 z-50 flex items-center justify-center"
+      role="status"
+      aria-live="polite"
+      aria-label="Loading"
+    >
+      <div className="loader-panel flex flex-col items-center gap-5 px-8 py-7">
+        <div className="relative h-[4.5rem] w-[4.5rem]">
+          <span className="loader-ring loader-ring-outer" aria-hidden />
+          <span className="loader-ring loader-ring-inner" aria-hidden />
+          <span className="loader-ring loader-ring-dash" aria-hidden />
 
-        {/* Middle spinner */}
-        <div
-          className="absolute inset-2 border-4 border-t-transparent border-r-white/20 border-b-transparent border-l-transparent rounded-full animate-spin"
-          style={{ animationDuration: "0.8s" }}
-        ></div>
+          <div className="absolute inset-[0.9rem] flex items-center justify-center rounded-full bg-white shadow-[0_8px_24px_rgba(11,31,68,0.08)]">
+            <img
+              src="/insourcextechlogo.png"
+              alt=""
+              className="loader-mark h-7 w-7 rounded-full object-cover"
+            />
+          </div>
+        </div>
 
-        {/* Inner spinner */}
-        <div
-          className="absolute inset-4 border-4 border-t-transparent border-r-transparent border-b-white/90 border-l-transparent rounded-full animate-spin"
-          style={{ animationDuration: "0.6s" }}
-        ></div>
+        <div className="text-center">
+          <p className="font-display text-2xl leading-none tracking-[0.04em] text-[var(--color-ink)]">
+            INSOURCE
+          </p>
+          <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--color-text-muted)]">
+            Loading
+            <span className="loader-dots" aria-hidden>
+              <span>.</span>
+              <span>.</span>
+              <span>.</span>
+            </span>
+          </p>
+        </div>
 
-        {/* Center dot */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+        <div className="loader-track h-[2px] w-28 overflow-hidden rounded-full bg-[var(--color-muted)]">
+          <span className="loader-bar block h-full w-1/2 rounded-full bg-[var(--color-accent)]" />
         </div>
       </div>
     </div>

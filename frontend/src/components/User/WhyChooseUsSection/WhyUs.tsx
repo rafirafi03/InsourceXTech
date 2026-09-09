@@ -1,7 +1,9 @@
-import { motion, Variants } from 'framer-motion';
-import { Monitor, Target, Globe, Users } from 'lucide-react';
-import { useGetWhyUsQuery } from '../../../store/slices/apiSlices';
-import Loading from '../Loader/loader';
+import { motion } from "framer-motion";
+import { Monitor, Target, Globe, Users } from "lucide-react";
+import { useGetWhyUsQuery } from "../../../store/slices/apiSlices";
+import Loading from "../Loader/loader";
+import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
+import { easeOutExpo } from "../../../utils/motion";
 
 const WhyChooseUsComponent = () => {
   const { data, isLoading } = useGetWhyUsQuery(undefined);
@@ -12,94 +14,64 @@ const WhyChooseUsComponent = () => {
 
   const features = [
     {
-      icon: <Monitor className="h-8 w-8 text-blue-600" />,
+      icon: <Monitor className="h-6 w-6 text-white" />,
       title: data?.whyUs[0]?.title,
       description: data?.whyUs[0]?.description,
     },
     {
-      icon: <Target className="h-8 w-8 text-blue-600" />,
+      icon: <Target className="h-6 w-6 text-white" />,
       title: data?.whyUs[1]?.title,
       description: data?.whyUs[1]?.description,
     },
     {
-      icon: <Globe className="h-8 w-8 text-blue-600" />,
+      icon: <Globe className="h-6 w-6 text-white" />,
       title: data?.whyUs[2]?.title,
       description: data?.whyUs[2]?.description,
     },
     {
-      icon: <Users className="h-8 w-8 text-blue-600" />,
+      icon: <Users className="h-6 w-6 text-white" />,
       title: data?.whyUs[3]?.title,
       description: data?.whyUs[3]?.description,
     },
   ];
 
-  // Define animation variants
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2, // Stagger the animation of children
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
-    <motion.div
-      className="py-16"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.5 }}
-      variants={containerVariants}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading Section */}
-        <motion.div
-          className="text-center mb-16"
-          variants={itemVariants}
-        >
-          <h2 className="text-4xl font-bold text-blue-900 mb-4">Why Choose Us?</h2>
-          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-        </motion.div>
+    <section className="section-block">
+      <div className="page-shell">
+        <Reveal variant="blur" className="section-head text-center">
+          <p className="eyebrow">Why us</p>
+          <h2 className="display-title">
+            WHY <span className="accent-text">CHOOSE US?</span>
+          </h2>
+        </Reveal>
 
-        {/* Features Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 cursor-pointer"
-          variants={containerVariants}
-        >
+        <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="relative flex flex-col items-center text-center transition-all duration-300 hover:scale-105"
-              variants={itemVariants}
-            >
-              {/* Divider line except for the last item on desktop */}
-              {index < features.length - 1 && (
-                <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-px bg-gray-200"></div>
-              )}
-
-              {/* Icon */}
-              <div className="rounded-full border-2 border-blue-100 bg-blue-50 p-4 mb-6">
-                {feature.icon}
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-bold text-blue-800 mb-3">{feature.title}</h3>
-
-              {/* Description */}
-              <p className="text-gray-600 leading-relaxed px-4">
-                {feature.description}
-              </p>
-            </motion.div>
+            <StaggerItem key={index}>
+              <motion.div
+                whileHover={{ y: -6, scale: 1.015 }}
+                transition={{ type: "spring", stiffness: 280, damping: 20 }}
+                className="flex h-full flex-col rounded-[1.5rem] bg-[var(--color-muted)] p-6 sm:p-7"
+              >
+                <motion.div
+                  whileHover={{ rotate: 8, scale: 1.08 }}
+                  transition={{ duration: 0.35, ease: easeOutExpo }}
+                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-accent)]"
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="font-display text-2xl uppercase leading-tight text-[var(--color-ink)]">
+                  {feature.title}
+                </h3>
+                <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">
+                  {feature.description}
+                </p>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </motion.div>
+        </Stagger>
       </div>
-    </motion.div>
+    </section>
   );
 };
 

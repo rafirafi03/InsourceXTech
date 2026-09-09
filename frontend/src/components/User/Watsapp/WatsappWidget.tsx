@@ -1,25 +1,34 @@
-import { FaWhatsapp } from 'react-icons/fa'; // You'll need to install react-icons
-
+import { FaWhatsapp } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const WhatsAppButton = () => {
-  // Replace with your actual WhatsApp number with country code
   const phoneNumber = "971581053524";
-  // Optional pre-filled message
-  const message = 'Hello! I would like to know more about your services.';
-  
+  const message = "Hello! I would like to know more about your services.";
+
   const handleWhatsAppClick = () => {
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
-    <button
+    <motion.button
       onClick={handleWhatsAppClick}
-      className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 z-50 cursor-pointer hover:scale-110"
+      initial={{ opacity: 0, scale: 0.7, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ delay: 1, type: "spring", stiffness: 260, damping: 18 }}
+      whileHover={{ scale: 1.12, rotate: 4 }}
+      whileTap={{ scale: 0.94 }}
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-[var(--color-accent)] text-white shadow-[0_10px_30px_rgba(37,99,235,0.4)]"
       aria-label="Contact us on WhatsApp"
     >
-      <FaWhatsapp size={24} />
-    </button>
+      <motion.span
+        animate={{ scale: [1, 1.08, 1] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        className="flex items-center justify-center"
+      >
+        <FaWhatsapp size={26} />
+      </motion.span>
+    </motion.button>
   );
 };
 

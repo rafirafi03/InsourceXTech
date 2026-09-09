@@ -1,29 +1,43 @@
 import { useGetServicesQuery } from "../../../store/slices/apiSlices";
 import { IService } from "../../../types";
 import Card from "../Card/Card";
-import Loader from '../Loader/loader'
+import Loader from "../Loader/loader";
+import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
 
 export default function App() {
   const { data: services, isLoading } = useGetServicesQuery(undefined);
 
-  if(isLoading) {
-    return <Loader/>
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
-    <div id="services" className="scroll-mt-25">
-      <div className="text-center m-16">
-        <h2 className="text-4xl font-bold text-blue-900 mb-4">Our Services</h2>
-        <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
-      </div>
+    <section id="services" className="section-block">
+      <div className="page-shell">
+        <Reveal variant="blur" className="section-head max-w-2xl">
+          <p className="eyebrow">What we deliver</p>
+          <h2 className="display-title">
+            OUR <span className="accent-text">SERVICES</span>
+          </h2>
+          <p className="section-copy">
+            Explore the capabilities that power modern businesses.
+          </p>
+        </Reveal>
 
-      <div className="pb-15 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {services?.services?.map((service: IService) => (
-            <Card key={service._id} title={service.title} image={service.image} content={service.content} subservices={service.subservices} />
+        <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {services?.services?.map((service: IService, index: number) => (
+            <StaggerItem key={service._id}>
+              <Card
+                title={service.title}
+                image={service.image}
+                content={service.content}
+                subservices={service.subservices}
+                index={index}
+              />
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
-    </div>
+    </section>
   );
 }

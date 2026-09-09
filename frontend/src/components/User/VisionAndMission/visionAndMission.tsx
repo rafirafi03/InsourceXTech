@@ -1,8 +1,9 @@
-import { motion, Variants } from 'framer-motion';
-import { LightbulbIcon, CompassIcon } from 'lucide-react';
-import { RootState } from '../../../store/store';
-import { useSelector } from 'react-redux';
-import Loader from '../Loader/loader';
+import { motion } from "framer-motion";
+import { LightbulbIcon, CompassIcon } from "lucide-react";
+import { RootState } from "../../../store/store";
+import { useSelector } from "react-redux";
+import Loader from "../Loader/loader";
+import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
 
 const MissionVisionComponent = () => {
   const { data, isLoading } = useSelector((state: RootState) => state.about);
@@ -12,91 +13,81 @@ const MissionVisionComponent = () => {
     return <Loader />;
   }
 
-  // Define animation variants
-  const containerVariants: Variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
-    <motion.div
-      id='mission'
-      className="rounded-lg overflow-hidden mt-15"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.5 }}
-      variants={containerVariants}
-    >
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <motion.div
-          className="bg-blue-900 rounded-lg py-6 px-6 text-center"
-          variants={itemVariants}
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-white">Our Purpose</h2>
-          <p className="text-slate-300 mt-2">Driving technology excellence in the GCC region</p>
-        </motion.div>
-        
-        {/* Content Container */}
-        <motion.div
-          className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 cursor-pointer"
-          variants={containerVariants}
-        >
-          {/* Vision Section */}
-          <motion.div
-            className="bg-white/20 rounded-2xl shadow-sm p-6 flex flex-col h-full transition-all duration-300 ease-in-out hover:bg-blue-100 hover:scale-105"
-            variants={itemVariants}
-          >
-            <div className="flex items-center mb-4">
-              <div className="bg-blue-50 p-3 rounded-full">
-                <LightbulbIcon className="h-6 w-6 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-blue-900 ml-3">Our Vision</h3>
+    <section id="mission" className="section-block">
+      <div className="page-shell">
+        <Reveal variant="blur" className="section-head max-w-2xl">
+          <p className="eyebrow">Our purpose</p>
+          <h2 className="display-title">
+            GO BIG WITH <span className="accent-text">PURPOSE</span>
+          </h2>
+          <p className="section-copy">
+            Driving technology excellence in the GCC region
+          </p>
+        </Reveal>
+
+        <Reveal variant="scale" className="mb-4 overflow-hidden rounded-[1.75rem] bg-[var(--color-muted)] sm:mb-5 sm:rounded-[2rem]">
+          <div className="grid items-center gap-6 p-5 sm:p-7 md:grid-cols-2 md:gap-8 md:p-8">
+            <div>
+              <h3 className="font-display text-4xl uppercase leading-none text-[var(--color-ink)] sm:text-5xl">
+                Built for the next chapter
+              </h3>
+              <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">
+                Vision and mission that keep every engagement focused on
+                measurable outcomes.
+              </p>
             </div>
-            <p className="text-slate-700 font-medium leading-relaxed flex-grow">
-              {about?.vision}
-            </p>
-          </motion.div>
-          
-          {/* Mission Section */}
-          <motion.div
-            className="bg-white/20 rounded-2xl shadow-sm p-6 flex flex-col h-full transition-all duration-300 ease-in-out hover:bg-blue-100 hover:scale-105"
-            variants={itemVariants}
-          >
-            <div className="flex items-center mb-4">
-              <div className="bg-emerald-50 p-3 rounded-full">
-                <CompassIcon className="h-6 w-6 text-emerald-600" />
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]"
+            >
+              <img
+                src="/Insourcebridgetech.png"
+                alt="Insource Bridge Technologies"
+                className="aspect-[16/10] w-full object-cover"
+              />
+            </motion.div>
+          </div>
+        </Reveal>
+
+        <Stagger className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
+          <StaggerItem>
+            <motion.div
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 280, damping: 20 }}
+              className="h-full rounded-[1.5rem] bg-[var(--color-muted)] p-6 sm:p-8"
+            >
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-accent)]">
+                <LightbulbIcon className="h-5 w-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-blue-900 ml-3">Our Mission</h3>
-            </div>
-            <p className="text-slate-700 font-medium leading-relaxed flex-grow">
-              {about?.mission}
-            </p>
-          </motion.div>
-        </motion.div>
-        
-        {/* Footer */}
-        <motion.div
-          className="px-6 pb-8 text-center"
-          variants={itemVariants}
-        >
-          <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent max-w-xs mx-auto mb-6"></div>
-          <p className="text-slate-500 text-sm md:text-base italic">Excellence in technology solutions</p>
-        </motion.div>
+              <h3 className="font-display text-3xl uppercase text-[var(--color-ink)]">
+                Our Vision
+              </h3>
+              <p className="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">
+                {about?.vision}
+              </p>
+            </motion.div>
+          </StaggerItem>
+
+          <StaggerItem>
+            <motion.div
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 280, damping: 20 }}
+              className="h-full rounded-[1.5rem] bg-[var(--color-panel)] p-6 text-white sm:p-8"
+            >
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-accent)]">
+                <CompassIcon className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="font-display text-3xl uppercase">Our Mission</h3>
+              <p className="mt-3 text-[0.95rem] leading-relaxed text-white/60">
+                {about?.mission}
+              </p>
+            </motion.div>
+          </StaggerItem>
+        </Stagger>
       </div>
-    </motion.div>
+    </section>
   );
 };
 

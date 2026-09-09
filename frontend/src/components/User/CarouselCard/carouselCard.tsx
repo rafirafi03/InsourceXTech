@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 interface CarouselCardProps {
   title: string;
@@ -7,37 +7,26 @@ interface CarouselCardProps {
 
 const CarouselCard = ({ title, image }: CarouselCardProps) => {
   return (
-    <div
-      className="group relative w-full h-80 overflow-hidden rounded-xl bg-white/10 hover:bg-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out border border-blue-100 cursor-pointer"
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 280, damping: 20 }}
+      className="group relative z-0 flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#dce5f5] bg-white shadow-[0_8px_24px_rgba(11,31,68,0.05)] transition-shadow hover:z-10 hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)]"
     >
-      {/* Card Image with Overlay Gradient */}
-      <div className="h-48 overflow-hidden">
-        <div className="absolute inset-0 opacity-60 z-10 group-hover:opacity-70 transition-opacity duration-300"></div>
+      <div className="relative h-28 overflow-hidden bg-[var(--color-muted)] sm:h-36">
         <img
           src={image || "/api/placeholder/400/320"}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-panel)]/25 to-transparent opacity-0 transition group-hover:opacity-100" />
       </div>
 
-      {/* Card Content */}
-      <div
-        className="relative z-20 p-5 h-32 overflow-hidden flex flex-col items-center justify-center"
-      >
-        {/* Title with animation and truncation */}
-        <h3
-          className="text-lg font-bold text-blue-900 mb-3 group-hover:scale-105 transform transition-transform duration-300 line-clamp-2 overflow-ellipsis text-center"
-        >
+      <div className="flex flex-1 flex-col px-2.5 py-2.5 sm:px-4 sm:py-4">
+        <h3 className="font-display text-base uppercase leading-tight tracking-wide text-[var(--color-ink)] line-clamp-2 sm:text-lg">
           {title}
         </h3>
-
-        {/* Centered Text Line */}
-        <motion.div
-          className="w-16 h-1 bg-blue-900 rounded mb-3 mx-auto group-hover:bg-blue-700 transition-all duration-300 group-hover:w-24"
-          whileHover={{ width: "6rem" }} // Animate width on hover
-        />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

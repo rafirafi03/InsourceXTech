@@ -1,126 +1,120 @@
-import { useState, useEffect, useRef, useCallback } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import CarouselCard from '../CarouselCard/carouselCard'
-import { useGetSolutionsQuery } from "../../../store/slices/apiSlices"
-import { IService } from "../../../types"
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import CarouselCard from "../CarouselCard/carouselCard";
+import { useGetSolutionsQuery } from "../../../store/slices/apiSlices";
+import { IService } from "../../../types";
 
 export default function CustomCarousel() {
+  const { data: solutions } = useGetSolutionsQuery(undefined);
+  const solutionsArray: IService[] = useMemo(() => {
+    const list = solutions?.solutions;
+    return Array.isArray(list) ? list : [];
+  }, [solutions]);
 
-  const { data: solutions} = useGetSolutionsQuery(undefined);
+  const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [visibleItems, setVisibleItems] = useState(2);
 
-  const solutionsArray = solutions?.solutions
+  const totalItems = solutionsArray.length;
+  const maxIndex = Math.max(0, totalItems - visibleItems);
 
-  const [currentItemIndex, setCurrentItemIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [visibleItems, setVisibleItems] = useState(4) // Default for desktop
-  const carouselRef = useRef<HTMLDivElement>(null)
-  
-  const totalItems = solutionsArray?.length
-
-  // Function to handle window resize and set appropriate number of visible items
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        // Mobile: show 1 item
-        setVisibleItems(1)
-      } else if (window.innerWidth < 1024) {
-        // Tablet: show 2 items
-        setVisibleItems(2)
-      } else if (window.innerWidth < 1280) {
-        // Small desktop: show 3 items
-        setVisibleItems(3)
+      if (window.innerWidth < 900) {
+        setVisibleItems(2);
+      } else if (window.innerWidth < 1200) {
+        setVisibleItems(3);
       } else {
-        // Large desktop: show 4 items
-        setVisibleItems(4)
+        setVisibleItems(4);
       }
-    }
+    };
 
-    // Set initial value
-    handleResize()
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    // Add event listener
-    window.addEventListener('resize', handleResize)
+  // Keep index in range when data or visible count changes
+  useEffect(() => {
+    setCurrentItemIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
 
-    // Cleanup
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const goTo = useCallback(
+    (index: number) => {
+      if (isAnimating || totalItems === 0) return;
+      const next = Math.max(0, Math.min(index, maxIndex));
+      if (next === currentItemIndex) return;
 
-  // Function to handle moving to next item
+      setIsAnimating(true);
+      setCurrentItemIndex(next);
+      setTimeout(() => setIsAnimating(false), 500);
+    },
+    [isAnimating, totalItems, maxIndex, currentItemIndex]
+  );
+
   const handleNextItem = useCallback(() => {
-    if (isAnimating) return;
+    if (isAnimating || totalItems === 0) return;
 
     setIsAnimating(true);
-    setCurrentItemIndex((prevIndex) => (prevIndex === totalItems - 1 ? 0 : prevIndex + 1));
+    setCurrentItemIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    setTimeout(() => setIsAnimating(false), 500);
+  }, [isAnimating, totalItems, maxIndex]);
 
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 500);
-  }, [isAnimating, totalItems]);
+  const handlePrevItem = useCallback(() => {
+    if (isAnimating || totalItems === 0) return;
 
-  // Function to handle moving to previous item
-  const handlePrevItem = () => {
-    if (isAnimating) return
+    setIsAnimating(true);
+    setCurrentItemIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    setTimeout(() => setIsAnimating(false), 500);
+  }, [isAnimating, totalItems, maxIndex]);
 
-    setIsAnimating(true)
-    setCurrentItemIndex((prevIndex) => (prevIndex === 0 ? totalItems - 1 : prevIndex - 1))
-
-    setTimeout(() => {
-      setIsAnimating(false)
-    }, 500)
-  }
-
-  // Auto-rotation effect - move one item every 3 seconds
   useEffect(() => {
-    if (isPaused) return
+    if (isPaused || totalItems <= visibleItems) return;
 
     const interval = setInterval(() => {
-      handleNextItem()
-    }, 3000) // Auto rotate every 3 seconds
+      handleNextItem();
+    }, 3500);
 
-    return () => clearInterval(interval)
-  }, [currentItemIndex, isPaused, isAnimating, handleNextItem])
+    return () => clearInterval(interval);
+  }, [isPaused, handleNextItem, totalItems, visibleItems]);
 
-  // Pause auto-rotation when hovering
-  const handleMouseEnter = () => {
-    setIsPaused(true)
-  }
-
-  const handleMouseLeave = () => {
-    setIsPaused(false)
-  }
-
-  // Get the appropriate width class based on visible items
   const getItemWidthClass = () => {
     switch (visibleItems) {
-      case 1: return "w-full";
-      case 2: return "w-1/2";
-      case 3: return "w-1/3";
-      case 4: return "w-1/4";
-      default: return "w-1/4";
+      case 1:
+        return "w-full";
+      case 2:
+        return "w-1/2";
+      case 3:
+        return "w-1/3";
+      case 4:
+        return "w-1/4";
+      default:
+        return "w-1/2";
     }
+  };
+
+  if (totalItems === 0) {
+    return null;
   }
 
   return (
-    <div 
+    <div
       className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Carousel container */}
-      <div ref={carouselRef} className="relative overflow-hidden rounded-xl">
+      <div className="relative -my-3 overflow-hidden py-3">
         <div
           className="flex transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${(currentItemIndex * 100) / visibleItems}%)` }}
+          style={{
+            transform: `translateX(-${(currentItemIndex * 100) / visibleItems}%)`,
+          }}
         >
-          {solutionsArray?.map((item: IService, index:number) => (
-            <div 
-              key={index} 
-              className={`${getItemWidthClass()} flex-none p-2 sm:p-3`}
-              style={{ 
-                transform: `translateX(${index < currentItemIndex ? 100 * totalItems : 0}%)`,
-                transition: "transform 0ms" 
-              }}
+          {solutionsArray.map((item, index) => (
+            <div
+              key={item._id ?? index}
+              className={`${getItemWidthClass()} relative z-0 flex-none px-0.5 transition-[z-index] hover:z-20 sm:px-1.5 md:px-2`}
             >
               <CarouselCard title={item?.title} image={item?.image} />
             </div>
@@ -128,42 +122,51 @@ export default function CustomCarousel() {
         </div>
       </div>
 
-      {/* Navigation buttons */}
-      <button
-        onClick={handlePrevItem}
-        className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/80 shadow-md backdrop-blur-sm transition-all hover:bg-white hover:shadow-lg focus:outline-none"
-        aria-label="Previous item"
-      >
-        <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700" />
-      </button>
-
-      <button
-        onClick={handleNextItem}
-        className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/80 shadow-md backdrop-blur-sm transition-all hover:bg-white hover:shadow-lg focus:outline-none"
-        aria-label="Next item"
-      >
-        <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700" />
-      </button>
-
-      {/* Indicators for current item - show fewer indicators on mobile */}
-      <div className="mt-4 sm:mt-6 flex justify-center gap-1 sm:gap-2 overflow-x-auto px-2">
-        {Array.from({ length: Math.min(totalItems, 8) }).map((_, index) => (
+      {totalItems > visibleItems && (
+        <>
           <button
-            key={index}
-            onClick={() => {
-              if (!isAnimating) {
-                setIsAnimating(true)
-                setCurrentItemIndex(index)
-                setTimeout(() => setIsAnimating(false), 500)
-              }
-            }}
-            className={`h-1.5 sm:h-2.5 rounded-full transition-all ${
-              currentItemIndex === index ? "bg-slate-800 w-4 sm:w-6" : "bg-slate-300 w-1.5 sm:w-2.5 hover:bg-slate-400"
-            }`}
-            aria-label={`Go to item ${index + 1}`}
-          />
-        ))}
+            onClick={handlePrevItem}
+            className="absolute left-0 top-[34%] z-10 flex h-9 w-9 -translate-x-1 items-center justify-center rounded-full bg-[var(--color-panel)] text-white shadow-lg transition hover:bg-[var(--color-accent)] focus:outline-none sm:left-1 sm:h-10 sm:w-10 sm:translate-x-0"
+            aria-label="Previous item"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+
+          <button
+            onClick={handleNextItem}
+            className="absolute right-0 top-[34%] z-10 flex h-9 w-9 translate-x-1 items-center justify-center rounded-full bg-[var(--color-panel)] text-white shadow-lg transition hover:bg-[var(--color-accent)] focus:outline-none sm:right-1 sm:h-10 sm:w-10 sm:translate-x-0"
+            aria-label="Next item"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </>
+      )}
+
+      <div className="mt-5 flex flex-wrap justify-center gap-2">
+        {solutionsArray.map((item, index) => {
+          const isInView =
+            index >= currentItemIndex &&
+            index < currentItemIndex + visibleItems;
+          const isLead = index === currentItemIndex;
+
+          return (
+            <button
+              key={item._id ?? `dot-${index}`}
+              type="button"
+              onClick={() => goTo(Math.min(index, maxIndex))}
+              className={`h-2 rounded-full transition-all ${
+                isLead
+                  ? "w-7 bg-[var(--color-accent)]"
+                  : isInView
+                    ? "w-3.5 bg-[var(--color-accent)]/55"
+                    : "w-2 bg-[var(--color-ink)]/15 hover:bg-[var(--color-ink)]/30"
+              }`}
+              aria-label={`Go to solution ${index + 1}: ${item.title}`}
+              aria-current={isLead ? "true" : undefined}
+            />
+          );
+        })}
       </div>
     </div>
-  )
+  );
 }
