@@ -4,5 +4,5 @@
 // domain 
 export const baseUrl = 'https://api.insourcextech.com/api'
 
-// Set to false to reconnect the public site to the API.
+// true: public site uses src/data/staticData.ts. false: fetch from the API.
 export const USE_STATIC_CONTENT = true

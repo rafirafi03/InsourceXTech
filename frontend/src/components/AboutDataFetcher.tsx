@@ -4,12 +4,13 @@ import { useGetAboutCompanyQuery } from "../store/slices/apiSlices";
 import { setAboutData, setLoading } from "../store/slices/aboutSlices";
 import { AppDispatch } from "../store/store";
 import { USE_STATIC_CONTENT } from "../constants";
+import { staticAbout } from "../data/staticData";
 
 const AboutDataFetcher = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, isLoading } = useGetAboutCompanyQuery(undefined, {
-    skip: USE_STATIC_CONTENT,
-  });
+  const query = useGetAboutCompanyQuery(undefined, { skip: USE_STATIC_CONTENT });
+  const data = USE_STATIC_CONTENT ? staticAbout : query.data;
+  const isLoading = USE_STATIC_CONTENT ? false : query.isLoading;
 
   useEffect(() => {
     dispatch(setLoading(isLoading));

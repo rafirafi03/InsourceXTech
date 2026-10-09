@@ -3,17 +3,16 @@ import { IService } from "../../../types";
 import Card from "../Card/Card";
 import Loader from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
-import { DUMMY_SERVICES, pickList } from "../../../data/dummyContent";
 import { USE_STATIC_CONTENT } from "../../../constants";
+import { staticServices } from "../../../data/staticData";
 
 export default function App() {
-  const { data: services, isLoading } = useGetServicesQuery(undefined, {
-    skip: USE_STATIC_CONTENT,
-  });
-  const serviceList = pickList(
-    services?.services as IService[] | undefined,
-    DUMMY_SERVICES
-  );
+  const query = useGetServicesQuery(undefined, { skip: USE_STATIC_CONTENT });
+  const services = USE_STATIC_CONTENT ? staticServices : query.data;
+  const isLoading = USE_STATIC_CONTENT ? false : query.isLoading;
+  const serviceList: IService[] = Array.isArray(services?.services)
+    ? services.services
+    : [];
 
   if (isLoading) {
     return <Loader />;

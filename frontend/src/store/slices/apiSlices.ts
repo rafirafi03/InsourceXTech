@@ -6,6 +6,7 @@ export const apiSlices = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
     credentials: "include",
+    timeout: 15000,
   }),
   endpoints: (builder) => ({
     getAboutCompany: builder.query({

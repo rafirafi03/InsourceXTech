@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useSendMailMutation } from "../../../store/slices/apiSlices";
 import { toast } from "react-toastify";
 import { Reveal } from "../Motion/Reveal";
-import { USE_STATIC_CONTENT } from "../../../constants";
+
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 
 const ContactComponent = () => {
-  const [sendMail] = useSendMailMutation();
+  const [isSending, setIsSending] = useState(false);
+  const [botcheck, setBotcheck] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,26 +27,49 @@ const ContactComponent = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (USE_STATIC_CONTENT) {
-      toast.success("Thanks! We'll get back to you soon.");
-      setFormData({ name: "", email: "", subject: "", message: "" });
+    if (isSending) return;
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
+    if (!accessKey) {
+      toast.error("Contact form is not configured");
       return;
     }
-    const loadingToast = toast.loading("sending...");
+
+    setIsSending(true);
+    const loadingToast = toast.loading("Sending...");
     try {
-      const res = await sendMail(formData).unwrap();
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject || `New contact from ${formData.name}`,
+          message: formData.message,
+          from_name: "Insource Bridge Technologies Website",
+          botcheck,
+        }),
+      });
+      const result = await res.json();
       toast.dismiss(loadingToast);
-      if (res.success) {
-        toast.success("mail send successfully");
+
+      if (result.success) {
+        toast.success("Message sent successfully");
+        setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        toast.error("something went wrong");
+        toast.error(result.message || "Something went wrong");
       }
     } catch (error) {
       toast.dismiss(loadingToast);
-      toast.error("something went wrong");
-      console.error("Failed to send mail", error);
+      toast.error("Something went wrong. Please try again.");
+      console.error("Failed to send message", error);
+    } finally {
+      setIsSending(false);
     }
-    setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
@@ -76,6 +100,16 @@ const ContactComponent = () => {
             </h3>
 
             <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+              <input
+                type="checkbox"
+                name="botcheck"
+                checked={botcheck}
+                onChange={(e) => setBotcheck(e.target.checked)}
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
                   <label
@@ -163,9 +197,10 @@ const ContactComponent = () => {
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 320, damping: 20 }}
                   type="submit"
-                  className="btn-accent w-full"
+                  disabled={isSending}
+                  className="btn-accent w-full disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Send Message
+                  {isSending ? "Sending..." : "Send Message"}
                 </motion.button>
               </div>
             </form>

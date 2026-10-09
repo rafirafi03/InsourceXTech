@@ -1,7 +1,7 @@
 const SpinnerLoader = () => {
   return (
     <div
-      className="loader-overlay fixed inset-0 z-50 flex items-center justify-center"
+      className="page-shell flex min-h-[18rem] items-center justify-center py-10"
       role="status"
       aria-live="polite"
       aria-label="Loading"

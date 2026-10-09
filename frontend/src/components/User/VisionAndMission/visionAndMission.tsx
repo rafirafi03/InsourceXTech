@@ -4,11 +4,9 @@ import { RootState } from "../../../store/store";
 import { useSelector } from "react-redux";
 import Loader from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
-import { pickAbout } from "../../../data/dummyContent";
-
 const MissionVisionComponent = () => {
   const { data, isLoading } = useSelector((state: RootState) => state.about);
-  const about = pickAbout(data?.aboutCompany);
+  const about = data?.aboutCompany;
 
   if (isLoading) {
     return <Loader />;

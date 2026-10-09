@@ -2,7 +2,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const WhatsAppButton = () => {
-  const phoneNumber = "971581053524";
+  const phoneNumber = import.meta.env.VITE_WHATSAPP_NO || "971585883524";
   const message = "Hello! I would like to know more about your services.";
 
   const handleWhatsAppClick = () => {

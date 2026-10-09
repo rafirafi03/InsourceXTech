@@ -4,19 +4,21 @@ import { useGetWhyUsQuery } from "../../../store/slices/apiSlices";
 import Loading from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
 import { easeOutExpo } from "../../../utils/motion";
-import { pickWhyUs } from "../../../data/dummyContent";
 import { USE_STATIC_CONTENT } from "../../../constants";
+import { staticWhyUs } from "../../../data/staticData";
+
+type WhyUsItem = { title: string; description: string };
 
 const WhyChooseUsComponent = () => {
-  const { data, isLoading } = useGetWhyUsQuery(undefined, {
-    skip: USE_STATIC_CONTENT,
-  });
+  const query = useGetWhyUsQuery(undefined, { skip: USE_STATIC_CONTENT });
+  const data = USE_STATIC_CONTENT ? staticWhyUs : query.data;
+  const isLoading = USE_STATIC_CONTENT ? false : query.isLoading;
 
   if (isLoading) {
     return <Loading />;
   }
 
-  const whyUs = pickWhyUs(data?.whyUs);
+  const whyUs: WhyUsItem[] = Array.isArray(data?.whyUs) ? data.whyUs : [];
   const icons = [
     <Monitor className="h-6 w-6 text-white" />,
     <Target className="h-6 w-6 text-white" />,
