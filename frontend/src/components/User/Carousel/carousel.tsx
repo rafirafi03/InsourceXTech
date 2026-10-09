@@ -4,11 +4,14 @@ import CarouselCard from "../CarouselCard/carouselCard";
 import { useGetSolutionsQuery } from "../../../store/slices/apiSlices";
 import { IService } from "../../../types";
 import { DUMMY_SOLUTIONS, pickList } from "../../../data/dummyContent";
+import { USE_STATIC_CONTENT } from "../../../constants";
 
 const SWIPE_THRESHOLD = 48;
 
 export default function CustomCarousel() {
-  const { data: solutions } = useGetSolutionsQuery(undefined);
+  const { data: solutions } = useGetSolutionsQuery(undefined, {
+    skip: USE_STATIC_CONTENT,
+  });
   const solutionsArray: IService[] = useMemo(() => {
     return pickList(
       solutions?.solutions as IService[] | undefined,

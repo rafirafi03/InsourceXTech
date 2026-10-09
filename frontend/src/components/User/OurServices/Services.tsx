@@ -4,9 +4,12 @@ import Card from "../Card/Card";
 import Loader from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
 import { DUMMY_SERVICES, pickList } from "../../../data/dummyContent";
+import { USE_STATIC_CONTENT } from "../../../constants";
 
 export default function App() {
-  const { data: services, isLoading } = useGetServicesQuery(undefined);
+  const { data: services, isLoading } = useGetServicesQuery(undefined, {
+    skip: USE_STATIC_CONTENT,
+  });
   const serviceList = pickList(
     services?.services as IService[] | undefined,
     DUMMY_SERVICES

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useSendMailMutation } from "../../../store/slices/apiSlices";
 import { toast } from "react-toastify";
 import { Reveal } from "../Motion/Reveal";
+import { USE_STATIC_CONTENT } from "../../../constants";
 
 const ContactComponent = () => {
   const [sendMail] = useSendMailMutation();
@@ -25,6 +26,11 @@ const ContactComponent = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (USE_STATIC_CONTENT) {
+      toast.success("Thanks! We'll get back to you soon.");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      return;
+    }
     const loadingToast = toast.loading("sending...");
     try {
       const res = await sendMail(formData).unwrap();

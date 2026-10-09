@@ -5,9 +5,12 @@ import Loading from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
 import { easeOutExpo } from "../../../utils/motion";
 import { pickWhyUs } from "../../../data/dummyContent";
+import { USE_STATIC_CONTENT } from "../../../constants";
 
 const WhyChooseUsComponent = () => {
-  const { data, isLoading } = useGetWhyUsQuery(undefined);
+  const { data, isLoading } = useGetWhyUsQuery(undefined, {
+    skip: USE_STATIC_CONTENT,
+  });
 
   if (isLoading) {
     return <Loading />;
