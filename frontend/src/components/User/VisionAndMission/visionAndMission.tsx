@@ -21,7 +21,8 @@ const MissionVisionComponent = () => {
             GO BIG WITH <span className="accent-text">PURPOSE</span>
           </h2>
           <p className="section-copy">
-            Driving technology excellence in the GCC region
+            Driving technology excellence across the GCC — with clarity,
+            partnership, and lasting impact.
           </p>
         </Reveal>
 
@@ -32,8 +33,10 @@ const MissionVisionComponent = () => {
                 Built for the next chapter
               </h3>
               <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">
-                Vision and mission that keep every engagement focused on
-                measurable outcomes.
+                We bridge complex business challenges with practical technology
+                solutions. Our vision and mission keep every engagement focused
+                on measurable outcomes, stronger operations, and long-term
+                growth for the organisations we serve.
               </p>
             </div>
             <motion.div
@@ -42,9 +45,9 @@ const MissionVisionComponent = () => {
               className="overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]"
             >
               <img
-                src="/Insourcebridgetech.png"
-                alt="Insource Bridge Technologies"
-                className="aspect-[16/10] w-full object-cover"
+                src="/insourcextech2.png"
+                alt="Insource Bridge Technologies office"
+                className="aspect-[16/10] h-full w-full object-cover"
               />
             </motion.div>
           </div>

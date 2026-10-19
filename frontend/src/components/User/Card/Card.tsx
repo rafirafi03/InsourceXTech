@@ -36,9 +36,6 @@ export default function Card({
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-panel)]/25 to-transparent opacity-0 transition group-hover:opacity-100" />
-          <div className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-accent)] text-white opacity-0 shadow-md transition group-hover:opacity-100">
-            <ArrowUpRight size={14} />
-          </div>
         </div>
 
         <div className="flex flex-1 flex-col px-3.5 py-3.5 sm:px-4 sm:py-4">

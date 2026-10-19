@@ -20,8 +20,8 @@ export default function AboutUsSection() {
   return (
     <section id="about" className="section-block">
       <div className="page-shell">
-        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-          <Reveal variant="left" className="order-2 lg:order-1">
+        <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
+          <Reveal variant="left" className="order-2 flex flex-col justify-center lg:order-1">
             <p className="eyebrow">About us</p>
             <h2 className="display-title">
               WHAT OUR
@@ -46,16 +46,19 @@ export default function AboutUsSection() {
             </motion.button>
           </Reveal>
 
-          <Reveal variant="right" className="order-1 lg:order-2">
+          <Reveal
+            variant="right"
+            className="order-1 h-full min-h-[18rem] lg:order-2 sm:min-h-[22rem]"
+          >
             <motion.div
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.015 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden rounded-[1.75rem] bg-[var(--color-muted)] sm:rounded-[2rem]"
+              className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.75rem] bg-[var(--color-muted)] sm:min-h-[22rem] sm:rounded-[2rem]"
             >
               <img
                 src="/Insourcebridgetech.png"
                 alt="Insource Bridge Technologies Team"
-                className="aspect-[4/3] w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
             </motion.div>
           </Reveal>
