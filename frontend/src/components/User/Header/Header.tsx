@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { scrollHelper } from "../../../utils/scrollHelper";
 
-const navItems = ["Solutions", "Services", "About", "Mission", "Contact"];
+const navItems = ["About", "Solutions", "Services", "Mission", "Contact"];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

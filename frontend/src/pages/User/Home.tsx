@@ -18,9 +18,9 @@ function App() {
         <Header />
         <main className="pb-2">
           <HeroSection />
+          <AboutUs />
           <OurSoultions />
           <Services />
-          <AboutUs />
           <MissionVisionComponent />
           <WhyChooseUsComponent />
           <ContactComponent />

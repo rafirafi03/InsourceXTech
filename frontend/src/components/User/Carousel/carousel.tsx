@@ -96,7 +96,8 @@ export default function CustomCarousel() {
   }, [isPaused, handleNextItem, totalItems, visibleItems]);
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
+    // Keep mouse wheel / Lenis free on desktop; swipe only for touch.
+    if (e.pointerType === "mouse") return;
     pointerStart.current = { x: e.clientX, y: e.clientY };
     swipeLocked.current = null;
     setIsPaused(true);
@@ -175,8 +176,7 @@ export default function CustomCarousel() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div
-        className="relative -my-3 touch-pan-y overflow-hidden py-3 select-none"
-        data-lenis-prevent
+        className="relative -my-3 overflow-hidden py-3"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

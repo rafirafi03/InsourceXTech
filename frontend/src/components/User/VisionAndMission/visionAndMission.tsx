@@ -4,6 +4,7 @@ import { RootState } from "../../../store/store";
 import { useSelector } from "react-redux";
 import Loader from "../Loader/loader";
 import { Reveal, Stagger, StaggerItem } from "../Motion/Reveal";
+
 const MissionVisionComponent = () => {
   const { data, isLoading } = useSelector((state: RootState) => state.about);
   const about = data?.aboutCompany;
@@ -16,41 +17,10 @@ const MissionVisionComponent = () => {
     <section id="mission" className="section-block">
       <div className="page-shell">
         <Reveal variant="blur" className="section-head max-w-2xl">
-          <p className="eyebrow">Our purpose</p>
+          <p className="eyebrow">Direction</p>
           <h2 className="display-title">
-            GO BIG WITH <span className="accent-text">PURPOSE</span>
+            VISION & <span className="accent-text">MISSION</span>
           </h2>
-          <p className="section-copy">
-            Driving technology excellence across the GCC — with clarity,
-            partnership, and lasting impact.
-          </p>
-        </Reveal>
-
-        <Reveal variant="scale" className="mb-4 overflow-hidden rounded-[1.75rem] bg-[var(--color-muted)] sm:mb-5 sm:rounded-[2rem]">
-          <div className="grid items-center gap-6 p-5 sm:p-7 md:grid-cols-2 md:gap-8 md:p-8">
-            <div>
-              <h3 className="font-display text-4xl uppercase leading-none text-[var(--color-ink)] sm:text-5xl">
-                Built for the next chapter
-              </h3>
-              <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-[var(--color-text-muted)]">
-                We bridge complex business challenges with practical technology
-                solutions. Our vision and mission keep every engagement focused
-                on measurable outcomes, stronger operations, and long-term
-                growth for the organisations we serve.
-              </p>
-            </div>
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]"
-            >
-              <img
-                src="/insourcextech2.png"
-                alt="Insource Bridge Technologies office"
-                className="aspect-[16/10] h-full w-full object-cover"
-              />
-            </motion.div>
-          </div>
         </Reveal>
 
         <Stagger className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">

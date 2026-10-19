@@ -21,17 +21,7 @@ const Footer = () => {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="overflow-hidden rounded-[2rem] bg-[var(--color-panel)] px-6 py-10 text-white sm:rounded-[2.5rem] sm:px-8 sm:py-12 md:px-10 md:py-12"
       >
-        <div className="max-w-2xl">
-          <h2 className="display-title !text-white">
-            OUTSIZED <span className="accent-on-dark">PERFORMANCE</span>
-          </h2>
-          <p className="mt-4 max-w-lg text-[0.95rem] leading-relaxed text-white/50 sm:mt-5">
-            Leading IT solutions in the GCC region — crafted for scale,
-            reliability, and lasting impact.
-          </p>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 gap-6 border-t border-white/10 pt-7 sm:mt-9 sm:grid-cols-2 sm:gap-7 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-4">
           <div>
             <h3 className="font-display text-2xl uppercase leading-tight">
               {about?.name}
