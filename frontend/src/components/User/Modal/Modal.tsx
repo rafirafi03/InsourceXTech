@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { ISubService } from "../../../types";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
@@ -12,6 +13,8 @@ interface pageProps {
   content: string;
   subservices?: ISubService[];
 }
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 const ConfirmationModal = ({
   isOpen,
@@ -40,91 +43,97 @@ const ConfirmationModal = ({
     };
   }, [isOpen, onClose]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-black/60 p-4 backdrop-blur-sm"
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-[#01030a]/80 p-4 backdrop-blur-md"
           data-lenis-prevent
           onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-label={title}
         >
           <div className="flex min-h-full items-center justify-center py-6">
             <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              initial={{ opacity: 0, y: 60, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.96 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: 30, scale: 0.97 }}
+              transition={{ duration: 0.6, ease }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg rounded-[2rem] bg-white p-6 shadow-2xl"
+              className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--bg-elev)] shadow-[0_40px_120px_-20px_rgba(59,130,246,0.35)]"
             >
-              <div className="mb-4 flex justify-end">
+              <div className="relative h-56 overflow-hidden sm:h-72">
+                <motion.img
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 1.2, ease }}
+                  alt={title}
+                  src={image}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-elev)] via-[var(--bg-elev)]/30 to-transparent" />
                 <button
                   onClick={onClose}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-muted)] text-[var(--color-ink)] transition hover:bg-[var(--color-accent)] hover:text-white"
+                  className="absolute top-4 right-4 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition hover:border-[var(--blue)] hover:bg-[var(--blue)]"
                   aria-label="Close"
                 >
                   <X size={18} />
                 </button>
               </div>
 
-              <div className="flex flex-col items-center">
-                <img
-                  alt={title}
-                  src={image}
-                  className="mb-4 h-52 w-full rounded-[1.5rem] object-cover"
-                />
-                <h5 className="font-display text-center text-3xl uppercase text-[var(--color-ink)]">
+              <div className="px-6 pb-8 sm:px-10 sm:pb-10">
+                <h5 className="font-display relative z-10 -mt-4 text-xl leading-snug text-white sm:text-2xl">
                   {title}
                 </h5>
-                <p className="my-3 text-center text-sm text-[var(--color-text-muted)] sm:text-base">
-                  {content}
-                </p>
-              </div>
+                <div className="my-5 h-px w-14 bg-[var(--blue)]" />
+                <p className="text-[0.975rem] leading-relaxed text-[var(--text-dim)]">{content}</p>
 
-              {subservices.length > 0 && (
-                <div className="mt-6">
-                  <h6 className="mb-4 text-center font-display text-2xl uppercase text-[var(--color-ink)]">
-                    Subservices
-                  </h6>
-                  <div className="flex flex-col gap-4">
-                    {subservices.map((sub, idx) => (
-                      <div
-                        key={idx}
-                        className="flex flex-col items-center rounded-[1.25rem] bg-[var(--color-muted)] p-4 text-center"
-                      >
-                        <img
-                          src={sub.image}
-                          alt={sub.title}
-                          className="mb-3 h-40 w-full rounded-xl object-cover"
-                        />
-                        <h6 className="font-display text-xl uppercase text-[var(--color-ink)]">
-                          {sub.title}
-                        </h6>
-                        <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                          {sub.description}
-                        </p>
-                      </div>
-                    ))}
+                {subservices.length > 0 && (
+                  <div className="mt-10">
+                    <h6 className="eyebrow mb-6">Subservices</h6>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {subservices.map((sub, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 24 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.2 + idx * 0.08, ease }}
+                          className="overflow-hidden rounded-[1.25rem] border border-white/10 bg-[var(--bg-card)]"
+                        >
+                          <img
+                            src={sub.image}
+                            alt={sub.title}
+                            className="h-36 w-full object-cover"
+                          />
+                          <div className="p-5">
+                            <h6 className="font-display text-sm text-white">{sub.title}</h6>
+                            <p className="mt-2 text-sm leading-relaxed text-[var(--text-dim)]">
+                              {sub.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              <div className="mt-6 flex justify-center">
-                <button
-                  onClick={onClose}
-                  className="btn-accent w-full justify-center sm:w-auto"
-                >
-                  Close
-                </button>
+                <div className="mt-10">
+                  <button onClick={onClose} className="btn-outline w-full sm:w-auto">
+                    Close
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

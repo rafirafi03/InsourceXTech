@@ -18,7 +18,7 @@ const WhatsAppButton = () => {
       transition={{ delay: 1, type: "spring", stiffness: 260, damping: 18 }}
       whileHover={{ scale: 1.12, rotate: 4 }}
       whileTap={{ scale: 0.94 }}
-      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-[var(--color-accent)] text-white shadow-[0_10px_30px_rgba(37,99,235,0.4)]"
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-[var(--blue)] text-white shadow-[0_10px_40px_-6px_var(--blue)] ring-1 ring-white/20"
       aria-label="Contact us on WhatsApp"
     >
       <motion.span

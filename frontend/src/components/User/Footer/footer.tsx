@@ -1,88 +1,121 @@
+import { useRef } from "react";
 import { Mail, PhoneCall, MapPin, Clock } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { RootState } from "../../../store/store";
 import Loader from "../Loader/loader";
 import { useSelector } from "react-redux";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const { data, isLoading } = useSelector((state: RootState) => state.about);
   const about = data?.aboutCompany;
 
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
+  const wordY = useTransform(scrollYProgress, [0, 1], ["60%", "0%"]);
+  const wordOpacity = useTransform(scrollYProgress, [0.2, 1], [0, 1]);
+  const lineScale = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
+
   if (isLoading) {
     return <Loader />;
   }
 
+  const columns: {
+    heading: string;
+    items: { icon: typeof Mail; text?: string; href?: string }[];
+  }[] = [
+    {
+      heading: "Contact Us",
+      items: [
+        { icon: PhoneCall, text: about?.phone, href: about?.phone ? `tel:${about.phone.replace(/\s/g, "")}` : undefined },
+        { icon: Mail, text: about?.email, href: about?.email ? `mailto:${about.email}` : undefined },
+      ],
+    },
+    { heading: "Location", items: [{ icon: MapPin, text: about?.location }] },
+    { heading: "Working Hours", items: [{ icon: Clock, text: about?.timing }] },
+  ];
+
   return (
-    <footer className="page-shell pb-5 pt-1 sm:pb-6">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="overflow-hidden rounded-[2rem] bg-[var(--color-panel)] px-6 py-10 text-white sm:rounded-[2.5rem] sm:px-8 sm:py-12 md:px-10 md:py-12"
-      >
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-4">
+    <footer ref={ref} className="relative overflow-hidden border-t border-white/[0.06] bg-[var(--bg)] pt-20">
+      <div className="shell relative">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="font-display text-2xl uppercase leading-tight">
-              {about?.name}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-white/45">
+            <h3 className="font-display text-lg leading-snug text-white">{about?.name}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--text-dim)]">
               Leading IT Solutions in the GCC Region
             </p>
           </div>
 
-          <div>
-            <h4 className="mb-3 text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent-soft)]">
-              Contact Us
-            </h4>
-            <div className="space-y-2.5">
-              <div className="flex items-start gap-2.5 text-sm leading-relaxed text-white/65">
-                <PhoneCall className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent-soft)]" />
-                <span>{about?.phone}</span>
+          {columns.map((col) => (
+            <div key={col.heading}>
+              <h4 className="eyebrow mb-5 !text-[0.6rem]">{col.heading}</h4>
+              <div className="space-y-3">
+                {col.items.map(({ icon: Icon, text, href }, i) => {
+                  const content = (
+                    <>
+                      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-[var(--blue)]" />
+                      <span className="break-words">{text}</span>
+                    </>
+                  );
+                  return href ? (
+                    <a
+                      key={i}
+                      href={href}
+                      className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-dim)] transition-colors hover:text-white"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div
+                      key={i}
+                      className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-dim)]"
+                    >
+                      {content}
+                    </div>
+                  );
+                })}
               </div>
-              <div className="flex items-start gap-2.5 text-sm leading-relaxed text-white/65">
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent-soft)]" />
-                <span className="break-all">{about?.email}</span>
-              </div>
             </div>
-          </div>
-
-          <div>
-            <h4 className="mb-3 text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent-soft)]">
-              Location
-            </h4>
-            <div className="flex items-start gap-2.5 text-sm leading-relaxed text-white/65">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent-soft)]" />
-              <span>{about?.location}</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="mb-3 text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent-soft)]">
-              Working Hours
-            </h4>
-            <div className="flex items-start gap-2.5 text-sm leading-relaxed text-white/65">
-              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent-soft)]" />
-              <span>{about?.timing}</span>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="mt-8 border-t border-white/10 pt-5 text-center">
-          <p className="text-sm text-white/35">
+        <motion.div
+          style={{ scaleX: lineScale }}
+          className="mt-16 h-px origin-left bg-gradient-to-r from-[var(--blue)] via-white/20 to-transparent"
+        />
+
+        <div className="flex flex-col gap-2 py-6 text-sm text-[var(--text-faint)] sm:flex-row sm:items-center sm:justify-between">
+          <p>
             © {currentYear} {about?.name}. All rights reserved.
           </p>
-          <p className="mt-1.5 text-sm text-white/35">
+          <p>
             Developed by{" "}
             <a
-              className="text-[var(--color-accent-soft)] hover:underline"
+              className="text-[var(--blue-bright)] transition-colors hover:text-white"
               href="https://www.instagram.com/rafii.in/"
             >
               Ahamad Rafi
             </a>
           </p>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Oversized wordmark rising from the bottom edge */}
+      <div className="pointer-events-none relative select-none overflow-hidden" aria-hidden>
+        <motion.p
+          style={{
+            y: wordY,
+            opacity: wordOpacity,
+            backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.16), rgba(59,130,246,0.04))",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+          }}
+          className="font-display -mb-[0.18em] text-center text-[11vw] leading-none tracking-[-0.03em]"
+        >
+          Insource
+        </motion.p>
+      </div>
     </footer>
   );
 };

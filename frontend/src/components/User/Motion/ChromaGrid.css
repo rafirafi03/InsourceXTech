@@ -1,0 +1,326 @@
+/* From React Bits <ChromaGrid /> (https://reactbits.dev). Local additions are at the end, marked "Insource:". */
+.chroma-grid {
+  --chroma-x: -9999px;
+  --chroma-y: -9999px;
+  --chroma-power: 0;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chroma-grid.has-frame {
+  padding: 10px;
+  border-radius: calc(var(--chroma-radius) + 10px);
+  background: var(--chroma-frame);
+  box-shadow: var(--chroma-frame-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+}
+
+.chroma-frame-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--chroma-frame-edge),
+    inset 0 1px 0 var(--chroma-frame-highlight);
+  pointer-events: none;
+}
+
+.chroma-grid-inner {
+  display: grid;
+  gap: var(--chroma-gap);
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      min(
+        100%,
+        max(var(--chroma-min), calc((100% - (var(--chroma-cols) - 1) * var(--chroma-gap)) / var(--chroma-cols)))
+      ),
+      1fr
+    )
+  );
+}
+
+.chroma-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: var(--chroma-radius);
+  background: var(--chroma-tile);
+  box-shadow: var(--chroma-tile-shadow);
+  color: var(--chroma-ink);
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  transition: filter 0.25s ease;
+}
+
+.chroma-card:hover {
+  filter: var(--chroma-hover);
+}
+
+a.chroma-card:active {
+  filter: var(--chroma-press);
+}
+
+a.chroma-card:focus-visible {
+  outline: 2px solid var(--chroma-ink);
+  outline-offset: 2px;
+}
+
+.chroma-wash,
+.chroma-color,
+.chroma-card-glow {
+  -webkit-mask-image: radial-gradient(
+    circle var(--chroma-r) at calc(var(--chroma-x) - var(--chroma-ox, 0px))
+      calc(var(--chroma-y) - var(--chroma-oy, 0px)),
+    var(--chroma-stops)
+  );
+  mask-image: radial-gradient(
+    circle var(--chroma-r) at calc(var(--chroma-x) - var(--chroma-ox, 0px))
+      calc(var(--chroma-y) - var(--chroma-oy, 0px)),
+    var(--chroma-stops)
+  );
+}
+
+.chroma-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 70% at 50% 100%, var(--chroma-accent), transparent 72%);
+  opacity: calc(var(--chroma-glow) * var(--chroma-power) * 0.45);
+}
+
+.chroma-media {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: var(--chroma-ratio);
+  border-radius: max(0px, calc(var(--chroma-radius) - 8px));
+  overflow: hidden;
+  background: var(--chroma-well);
+}
+
+.chroma-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.chroma-mono {
+  filter: grayscale(var(--chroma-gray)) brightness(calc(1 - var(--chroma-dim)));
+}
+
+.chroma-color {
+  opacity: var(--chroma-power);
+}
+
+.chroma-media-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--chroma-media-edge);
+  pointer-events: none;
+}
+
+.chroma-info {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 2px 6px 4px;
+}
+
+.chroma-title {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chroma-subtitle {
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--chroma-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chroma-card-rim,
+.chroma-card-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.chroma-card-rim {
+  box-shadow:
+    inset 0 0 0 1px var(--chroma-tile-edge),
+    inset 0 1px 0 var(--chroma-tile-highlight);
+}
+
+.chroma-card-glow {
+  box-shadow:
+    inset 0 0 0 1px var(--chroma-accent),
+    inset 0 0 16px -8px var(--chroma-accent);
+  opacity: calc(var(--chroma-border) * var(--chroma-power));
+}
+
+.chroma-grid[data-reveal='card'] .chroma-wash,
+.chroma-grid[data-reveal='card'] .chroma-color,
+.chroma-grid[data-reveal='card'] .chroma-card-glow {
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 0;
+  transition: opacity var(--chroma-fade) ease;
+}
+
+.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-wash {
+  opacity: calc(var(--chroma-glow) * 0.45);
+  transition-duration: 0.3s;
+}
+
+.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-color {
+  opacity: 1;
+  transition-duration: 0.3s;
+}
+
+.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-card-glow {
+  opacity: var(--chroma-border);
+  transition-duration: 0.3s;
+}
+
+/* ——— Insource: site typography, button cards, scroll entrance ——— */
+.chroma-card--button {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chroma-card--button:active {
+  filter: var(--chroma-press);
+}
+
+.chroma-card--button:focus-visible {
+  outline: 2px solid var(--blue, #3b82f6);
+  outline-offset: 3px;
+}
+
+.chroma-info {
+  gap: 6px;
+  padding: 6px 10px 10px;
+}
+
+.chroma-eyebrow {
+  font-family: var(--font-display, inherit);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--chroma-accent);
+}
+
+.chroma-title {
+  font-family: var(--font-display, inherit);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-height: 2.6em;
+}
+
+.chroma-subtitle {
+  font-size: 13.5px;
+  line-height: 1.55;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.chroma-media img {
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chroma-card:hover .chroma-media img {
+  transform: scale(1.06);
+}
+
+.chroma-grid[data-entrance] .chroma-card {
+  opacity: 0;
+  transform: translateY(48px) scale(0.97);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.25s ease;
+  transition-delay: calc(var(--chroma-i, 0) * 70ms), calc(var(--chroma-i, 0) * 70ms), 0s;
+}
+
+.chroma-grid[data-entrance][data-in-view] .chroma-card {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chroma-grid[data-entrance] .chroma-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Insource: compact cards when two sit side by side on phones */
+@media (max-width: 639px) {
+  .chroma-card {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .chroma-info {
+    gap: 4px;
+    padding: 4px 6px 8px;
+  }
+
+  .chroma-eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.16em;
+  }
+
+  .chroma-title {
+    font-size: 10px;
+    -webkit-line-clamp: 3;
+    min-height: 4em;
+  }
+
+  .chroma-subtitle {
+    font-size: 11.5px;
+    line-height: 1.45;
+    -webkit-line-clamp: 3;
+  }
+}

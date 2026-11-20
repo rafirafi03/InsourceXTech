@@ -1,67 +1,44 @@
-import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { useRef } from "react";
+import { useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
 import Loader from "../Loader/loader";
 import { RootState } from "../../../store/store";
-import { scrollHelper } from "../../../utils/scrollHelper";
-import { Reveal } from "../Motion/Reveal";
+import ScrollWords from "../Motion/ScrollWords";
+
 export default function AboutUsSection() {
   const { data, isLoading } = useSelector((state: RootState) => state.about);
   const aboutData = data?.aboutCompany;
 
-  const handleScroll = (section: string) => {
-    scrollHelper(section);
-  };
+  const pinRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: pinRef, offset: ["start start", "end end"] });
 
   if (isLoading) {
     return <Loader />;
   }
 
   return (
-    <section id="about" className="section-block">
-      <div className="page-shell">
-        <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
-          <Reveal variant="left" className="order-2 flex flex-col justify-center lg:order-1">
-            <p className="eyebrow">About us</p>
-            <h2 className="display-title">
-              WHAT OUR
-              <br />
-              <span className="accent-text">ADVANTAGES?</span>
-            </h2>
-            {aboutData?.name && (
-              <h3 className="mt-5 text-xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-2xl">
-                {aboutData.name}
-              </h3>
-            )}
-            <p className="section-copy max-w-lg">{aboutData?.about}</p>
-            <motion.button
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 320, damping: 20 }}
-              onClick={() => handleScroll("contact")}
-              className="btn-accent mt-6"
-            >
-              Learn more
-              <ArrowUpRight size={18} />
-            </motion.button>
-          </Reveal>
+    <section id="about" className="relative bg-[var(--bg)]">
+      {/* Pinned statement: words light up as you scroll */}
+      <div ref={pinRef} className="relative h-[220vh]">
+        <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden">
+          <div className="glow-orb right-[-10rem] top-1/4 h-[28rem] w-[28rem] opacity-40" />
+          <div className="shell relative">
+            <div className="mb-8 sm:mb-12">
+              <p className="eyebrow mb-5">About us</p>
+              <h2 className="section-title">
+                What our <span className="text-blue">advantages?</span>
+              </h2>
+            </div>
 
-          <Reveal
-            variant="right"
-            className="order-1 h-full min-h-[18rem] lg:order-2 sm:min-h-[22rem]"
-          >
-            <motion.div
-              whileHover={{ scale: 1.015 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.75rem] bg-[var(--color-muted)] sm:min-h-[22rem] sm:rounded-[2rem]"
-            >
-              <img
-                src="/Insourcebridgetech.png"
-                alt="Insource Bridge Technologies Team"
-                className="absolute inset-0 h-full w-full object-cover object-center"
+            {aboutData?.about && (
+              <ScrollWords
+                text={aboutData.about}
+                progress={scrollYProgress}
+                span={[0.05, 0.85]}
+                className="max-w-6xl text-[clamp(1.35rem,3.4vw,3.1rem)] font-semibold leading-[1.22] tracking-[-0.01em]"
               />
-            </motion.div>
-          </Reveal>
+            )}
+          </div>
         </div>
       </div>
     </section>
