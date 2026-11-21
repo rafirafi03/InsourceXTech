@@ -26,7 +26,7 @@ export default function CompanyDetails() {
     <section
       id="headquarters"
       aria-label="Headquarters"
-      className="relative overflow-hidden border-y border-white/[0.06] bg-[var(--bg)] py-24 sm:py-32"
+      className="relative overflow-hidden border-y border-white/[0.06] bg-[var(--bg)] py-14 sm:py-20 lg:py-24 xl:py-32"
     >
       <div className="grid-bg pointer-events-none absolute inset-0 opacity-50" />
       <div className="glow-orb right-[-12rem] top-1/4 h-[36rem] w-[36rem] opacity-40" />
@@ -42,7 +42,6 @@ export default function CompanyDetails() {
               transition={{ duration: 0.9, ease }}
               className="mb-6 flex flex-wrap items-center gap-3"
             >
-              <p className="eyebrow">Headquarters</p>
               <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-medium text-[var(--text-dim)]">
                 <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--blue)]" />
                 {clock} in Dubai

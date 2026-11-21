@@ -300,29 +300,81 @@ img {
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Soft band of blue light that sweeps down through the hero image */
-.hero-scan {
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(59, 130, 246, 0) 40%,
-    rgba(96, 165, 250, 0.16) 50%,
-    rgba(59, 130, 246, 0) 60%,
-    transparent 100%
-  );
-  background-size: 100% 300%;
-  mix-blend-mode: screen;
-  animation: hero-scan 7s cubic-bezier(0.45, 0, 0.55, 1) 2.5s infinite;
-  background-position: 0 100%;
+/* ——— Hero ——— */
+/* Faint dotted grid behind the hero, fading toward the bottom */
+.hero-dots::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(96, 165, 250, 0.32) 1.2px, transparent 1.6px);
+  background-size: 30px 30px;
+  mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
 }
 
-@keyframes hero-scan {
-  0% {
-    background-position: 0 100%;
-  }
-  60%,
-  100% {
-    background-position: 0 0%;
+/* Folder-tab notch cut into a card corner. Set the width with a class,
+   height with --nh and the corner radius with --nr. */
+.notch {
+  --nr: 18px;
+  --notch-bg: var(--bg);
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  height: var(--nh, 2.75rem);
+  background: var(--notch-bg);
+}
+
+.notch::before,
+.notch::after {
+  content: "";
+  position: absolute;
+  width: var(--nr);
+  height: var(--nr);
+}
+
+.notch--tr {
+  right: 0;
+  border-bottom-left-radius: var(--nr);
+}
+
+.notch--tr::before {
+  top: 0;
+  right: 100%;
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--nr) - 0.5px), var(--notch-bg) var(--nr));
+}
+
+.notch--tr::after {
+  top: 100%;
+  right: 0;
+  background: radial-gradient(circle at 0 100%, transparent calc(var(--nr) - 0.5px), var(--notch-bg) var(--nr));
+}
+
+.notch--tl {
+  left: 0;
+  border-bottom-right-radius: var(--nr);
+}
+
+.notch--tl::before {
+  top: 0;
+  left: 100%;
+  background: radial-gradient(circle at 100% 100%, transparent calc(var(--nr) - 0.5px), var(--notch-bg) var(--nr));
+}
+
+.notch--tl::after {
+  top: 100%;
+  left: 0;
+  background: radial-gradient(circle at 100% 100%, transparent calc(var(--nr) - 0.5px), var(--notch-bg) var(--nr));
+}
+
+/* Service strips with two cut corners */
+.hero-strip {
+  --cut: 12px;
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+}
+
+@media (min-width: 1024px) {
+  .hero-strip {
+    --cut: 18px;
   }
 }
 

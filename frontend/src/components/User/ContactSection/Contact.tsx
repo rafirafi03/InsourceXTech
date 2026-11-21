@@ -80,11 +80,11 @@ const ContactComponent = () => {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-[var(--bg)] py-24 sm:py-32">
+    <section id="contact" className="relative overflow-hidden bg-[var(--bg)] py-14 sm:py-20 lg:py-24 xl:py-32">
       <div className="glow-orb left-1/2 top-40 h-[34rem] w-[34rem] -translate-x-1/2 opacity-50" />
 
       {/* Giant title that slides together as it enters */}
-      <div ref={titleRef} className="relative mb-16 overflow-hidden sm:mb-24">
+      <div ref={titleRef} className="relative mb-10 overflow-hidden sm:mb-14 lg:mb-16 xl:mb-24">
         <motion.p
           style={{ x: leftX }}
           className="font-display whitespace-nowrap text-center text-[clamp(2.6rem,11vw,11rem)] leading-[0.95] text-white"

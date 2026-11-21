@@ -1,9 +1,10 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { Monitor, Target, Globe, Users } from "lucide-react";
 import Loading from "../Loader/loader";
 import { Reveal } from "../Motion/Reveal";
 import { useMediaQuery, useWhyUs } from "../../../Hooks/useSiteContent";
+import { useFitPin } from "../../../Hooks/useFitPin";
 
 const icons = [Monitor, Target, Globe, Users];
 const GAP = 20;
@@ -12,7 +13,7 @@ type Feature = { icon: ReactNode; title: string; description: string };
 
 function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
   return (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-white/10 bg-[var(--bg-card)] p-4 transition-colors duration-500 hover:border-[var(--blue)]/60 sm:rounded-[1.75rem] sm:p-8">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-white/10 bg-[var(--bg-card)] p-4 transition-colors duration-500 hover:border-[var(--blue)]/60 sm:rounded-[1.75rem] sm:p-8 lg:p-6 xl:p-8">
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-56 w-56 rounded-full bg-[var(--blue)]/0 blur-3xl transition-colors duration-700 group-hover:bg-[var(--blue)]/30" />
       <div className="relative mb-5 flex items-center justify-between sm:mb-10">
         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--blue)] text-white shadow-[0_0_30px_-4px_var(--blue)] sm:h-12 sm:w-12">
@@ -22,7 +23,7 @@ function FeatureCard({ feature, index }: { feature: Feature; index: number }) {
           {String(index + 1).padStart(2, "0")}
         </span>
       </div>
-      <h3 className="font-display relative text-[9.5px] leading-snug text-white min-[360px]:text-[11px] sm:text-base lg:text-lg">
+      <h3 className="font-display relative text-[9.5px] leading-snug text-white min-[360px]:text-[11px] sm:text-base lg:text-sm xl:text-lg [overflow-wrap:anywhere]">
         {feature.title}
       </h3>
       <p className="relative mt-2 flex-1 text-[12px] leading-relaxed text-[var(--text-dim)] sm:mt-4 sm:text-[0.95rem]">
@@ -76,7 +77,8 @@ const WhyChooseUsComponent = () => {
   // The pinned fly-out needs room; short screens (e.g. landscape phones) get the simple grid.
   const canPin = useMediaQuery("(min-width: 768px) and (min-height: 640px)");
 
-  const ref = useRef<HTMLDivElement>(null);
+  // Pinned panel fits its content; 160svh of scroll drives the fly-out (same as before).
+  const { pinRef: ref, panelRef, pinStyle, panelStyle } = useFitPin("160svh", "260vh", canPin && !isLoading);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const headingScale = useTransform(scrollYProgress, [0, 0.5], [1.15, 1]);
   const headingOpacity = useTransform(scrollYProgress, [0, 0.15], [0.3, 1]);
@@ -92,7 +94,6 @@ const WhyChooseUsComponent = () => {
 
   const heading = (
     <>
-      <p className="eyebrow mb-5">Why us</p>
       <h2 className="section-title">
         Why <span className="text-blue">choose us?</span>
       </h2>
@@ -102,7 +103,7 @@ const WhyChooseUsComponent = () => {
   // Phones and short screens: simple staggered reveal, no pinning.
   if (!canPin) {
     return (
-      <section ref={ref} id="why-us" className="relative bg-[var(--bg)] py-20 sm:py-24">
+      <section ref={ref} id="why-us" className="relative bg-[var(--bg)] py-14 sm:py-20 lg:py-24">
         <div className="shell">
           <Reveal variant="up" className="mb-8 sm:mb-12">
             {heading}
@@ -123,8 +124,8 @@ const WhyChooseUsComponent = () => {
   const rows = Math.ceil(features.length / cols);
 
   return (
-    <section ref={ref} id="why-us" className="relative h-[260vh] bg-[var(--bg)]">
-      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden">
+    <section ref={ref} id="why-us" className="relative bg-[var(--bg)]" style={pinStyle}>
+      <div ref={panelRef} className="py-14 sm:py-16 lg:py-20" style={panelStyle}>
         <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" />
         <div className="shell relative">
           <motion.div

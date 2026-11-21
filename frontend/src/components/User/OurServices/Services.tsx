@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Loader from "../Loader/loader";
 import Modal from "../Modal/Modal";
-import ScrollWords from "../Motion/ScrollWords";
 import ChromaGrid from "../Motion/ChromaGrid";
 import { useMediaQuery, useServices } from "../../../Hooks/useSiteContent";
 import { IService } from "../../../types";
@@ -47,35 +46,26 @@ export default function Services() {
   }
 
   return (
-    <section id="services" className="relative overflow-hidden bg-[var(--bg)] py-24 sm:py-32">
+    <section id="services" className="relative overflow-hidden bg-[var(--bg)] py-14 sm:py-20 lg:py-24 xl:py-32">
       <div className="glow-orb -right-40 top-20 h-[32rem] w-[32rem] opacity-30" />
       <div className="glow-orb -left-40 bottom-10 h-[28rem] w-[28rem] opacity-25" />
 
       <div className="shell relative">
-        <div className="mb-12 grid gap-8 sm:mb-16 lg:grid-cols-12 lg:items-end">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1, ease }}
-            className="lg:col-span-7"
-          >
-            <p className="eyebrow mb-5">What we deliver</p>
-            <h2 className="section-title">
-              Our <span className="text-blue">services</span>
-            </h2>
-          </motion.div>
-          <div className="lg:col-span-5">
-            <ScrollWords
-              text="Explore the capabilities that power modern businesses."
-              className="text-xl font-semibold leading-snug sm:text-2xl"
-            />
-            <p className="mt-4 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--text-faint)]">
-              <span className="h-px w-8 bg-[var(--blue)]" />
-              {String(services.length).padStart(2, "0")} services · Tap a card for details
-            </p>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1, ease }}
+          className="mb-12 flex flex-wrap items-end justify-between gap-6 sm:mb-16"
+        >
+          <h2 className="section-title">
+            Our <span className="text-blue">services</span>
+          </h2>
+          <p className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--text-faint)]">
+            <span className="h-px w-8 bg-[var(--blue)]" />
+            {String(services.length).padStart(2, "0")} services · Tap a card for details
+          </p>
+        </motion.div>
 
         <ChromaGrid
           items={items}

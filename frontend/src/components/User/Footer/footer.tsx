@@ -36,9 +36,9 @@ const Footer = () => {
   ];
 
   return (
-    <footer ref={ref} className="relative overflow-hidden border-t border-white/[0.06] bg-[var(--bg)] pt-20">
+    <footer ref={ref} className="relative overflow-hidden border-t border-white/[0.06] bg-[var(--bg)] pt-14 sm:pt-16 lg:pt-20">
       <div className="shell relative">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-10 lg:grid-cols-4">
           <div>
             <h3 className="font-display text-lg leading-snug text-white">{about?.name}</h3>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-dim)]">

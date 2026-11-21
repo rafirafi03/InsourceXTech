@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import Loader from "../Loader/loader";
 import { Reveal } from "../Motion/Reveal";
 import { useMediaQuery } from "../../../Hooks/useSiteContent";
+import { useFitPin } from "../../../Hooks/useFitPin";
 
 type Variant = "dark" | "blue";
 
@@ -167,7 +168,8 @@ const MissionVisionComponent = () => {
   const about = data?.aboutCompany;
   const isWide = useMediaQuery("(min-width: 1024px)");
 
-  const pinRef = useRef<HTMLDivElement>(null);
+  // Desktop: pinned panel fits its content; 160svh of scroll drives the flips (same as before).
+  const { pinRef, panelRef, pinStyle, panelStyle } = useFitPin("160svh", "260vh", isWide && !isLoading);
   const { scrollYProgress } = useScroll({ target: pinRef, offset: ["start start", "end end"] });
 
   if (isLoading) {
@@ -202,18 +204,11 @@ const MissionVisionComponent = () => {
 
   return (
     <section id="mission" className="relative bg-[var(--bg)]">
-      <div ref={pinRef} className={isWide ? "relative h-[260vh]" : "relative"}>
-        <div
-          className={
-            isWide
-              ? "sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden py-24"
-              : "py-24 sm:py-32"
-          }
-        >
+      <div ref={pinRef} className="relative" style={pinStyle}>
+        <div ref={panelRef} className="py-14 sm:py-20" style={panelStyle}>
           <div className="glow-orb left-1/2 top-1/2 h-[30rem] w-[50rem] max-w-full -translate-x-1/2 -translate-y-1/2 opacity-30" />
           <div className="shell relative">
             <Reveal variant="up" className="mb-10 lg:mb-12">
-              <p className="eyebrow mb-5">Direction</p>
               <h2 className="section-title">
                 Vision & <span className="text-blue">mission</span>
               </h2>
