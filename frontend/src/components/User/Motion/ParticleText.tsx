@@ -94,7 +94,8 @@ export default function ParticleText({ text, className }: ParticleTextProps) {
     const draw = () => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "#f5f7fb";
+      // Theme-aware: plain particles use the current text colour.
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--text").trim() || "#f5f7fb";
       for (const p of particles) if (!p.blue) ctx.fillRect(p.x, p.y, p.size, p.size);
       ctx.fillStyle = "#3b82f6";
       for (const p of particles) if (p.blue) ctx.fillRect(p.x, p.y, p.size, p.size);

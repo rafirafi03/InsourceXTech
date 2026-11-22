@@ -106,7 +106,7 @@ const Footer = () => {
           style={{
             y: wordY,
             opacity: wordOpacity,
-            backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.16), rgba(59,130,246,0.04))",
+            backgroundImage: "linear-gradient(180deg, rgb(var(--fg-rgb) / 0.16), rgba(59,130,246,0.04))",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",

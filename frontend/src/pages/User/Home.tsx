@@ -15,11 +15,13 @@ import Marquee from "../../components/User/Motion/Marquee";
 import CurvedLoop from "../../components/User/Motion/CurvedLoop";
 import ParticleSection from "../../components/User/ParticleSection/ParticleSection";
 import { useMediaQuery, useServices, useWhyUs } from "../../Hooks/useSiteContent";
+import { useTheme } from "../../Hooks/useTheme";
 
 function Home() {
   const { whyUs } = useWhyUs();
   const { services } = useServices();
   const isNarrow = useMediaQuery("(max-width: 767px)");
+  const theme = useTheme();
 
   const whyUsTitles = whyUs.map((item) => item.title);
   const serviceTitles = services.map((item) => item.title);
@@ -40,7 +42,7 @@ function Home() {
               curveAmount={isNarrow ? 60 : 90}
               fontSize={isNarrow ? 84 : 52}
               speed={1.4}
-              color="#f5f7fb"
+              color={theme === "light" ? "#0b1220" : "#f5f7fb"}
               separator="✦"
               edgeFade={0.35}
               scrollBoost={0.4}

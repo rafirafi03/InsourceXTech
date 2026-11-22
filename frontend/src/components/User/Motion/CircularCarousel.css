@@ -135,7 +135,7 @@
   align-items: center;
   gap: 10px;
   padding: 0 16px;
-  color: #fff;
+  color: var(--text, #fff);
   text-align: center;
   pointer-events: none;
   animation: circular-carousel-reveal 900ms ease both;

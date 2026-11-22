@@ -1,8 +1,37 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Moon, Sun } from "lucide-react";
 import { scrollHelper } from "../../../utils/scrollHelper";
 import { lenisInstance } from "../Motion/SmoothScroll";
+import { setTheme, useTheme } from "../../../Hooks/useTheme";
+
+/** Sun/moon switch between the dark and light colour themes. */
+function ThemeToggle() {
+  const theme = useTheme();
+  const isLight = theme === "light";
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(isLight ? "dark" : "light")}
+      aria-label={isLight ? "Switch to dark theme" : "Switch to light theme"}
+      title={isLight ? "Dark theme" : "Light theme"}
+      className="relative flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[var(--line-strong)] text-[var(--text)] transition-colors hover:border-[var(--blue)] hover:text-[var(--blue)]"
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ y: 18, rotate: -90, opacity: 0 }}
+          animate={{ y: 0, rotate: 0, opacity: 1 }}
+          exit={{ y: -18, rotate: 90, opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="flex"
+        >
+          {isLight ? <Moon size={18} /> : <Sun size={18} />}
+        </motion.span>
+      </AnimatePresence>
+    </button>
+  );
+}
 
 const navItems = ["About", "Solutions", "Services", "Mission", "Contact"];
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -60,7 +89,7 @@ const Header = () => {
         <div
           className={`transition-[background,border-color,backdrop-filter] duration-500 ${
             scrolled || isMenuOpen
-              ? "border-b border-white/[0.06] bg-[#01030a]/70 backdrop-blur-xl"
+              ? "border-b border-[var(--line)] bg-[var(--bg)]/75 backdrop-blur-xl"
               : "border-b border-transparent"
           }`}
         >
@@ -90,7 +119,7 @@ const Header = () => {
                 <button
                   key={item}
                   onClick={() => handleOnclick(item.toLowerCase())}
-                  className="group relative cursor-pointer overflow-hidden px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--text-dim)] transition-colors hover:text-white"
+                  className="group relative cursor-pointer overflow-hidden px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--text-dim)] transition-colors hover:text-[var(--text)]"
                 >
                   <span className="relative block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-[130%]">
                     {item}
@@ -103,6 +132,7 @@ const Header = () => {
             </nav>
 
             <div className="flex shrink-0 items-center gap-3">
+              <ThemeToggle />
               <button
                 onClick={() => handleOnclick("contact")}
                 className="btn-primary !hidden !min-h-11 !px-5 !text-[13px] lg:!inline-flex"
@@ -119,11 +149,11 @@ const Header = () => {
               >
                 <motion.span
                   animate={isMenuOpen ? { rotate: 45, y: 3.5 } : { rotate: 0, y: 0 }}
-                  className="block h-[1.5px] w-5 bg-white"
+                  className="block h-[1.5px] w-5 bg-[var(--text)]"
                 />
                 <motion.span
                   animate={isMenuOpen ? { rotate: -45, y: -3.5 } : { rotate: 0, y: 0 }}
-                  className="block h-[1.5px] w-5 bg-white"
+                  className="block h-[1.5px] w-5 bg-[var(--text)]"
                 />
               </button>
             </div>

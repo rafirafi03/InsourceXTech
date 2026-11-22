@@ -216,7 +216,7 @@ const HeroSection = () => {
         >
           {/* Photo card with folder-tab notch */}
           <Rise delay={T.cards} className="order-1 lg:order-none lg:flex-[1.75]">
-            <div className="group relative aspect-[4/5] h-full overflow-hidden rounded-[22px] bg-[var(--bg-card)] sm:aspect-[4/3] sm:rounded-[28px] lg:aspect-auto">
+            <div className="keep-light group relative aspect-[4/5] h-full overflow-hidden rounded-[22px] bg-[#0a1122] sm:aspect-[4/3] sm:rounded-[28px] lg:aspect-auto">
               <motion.img
                 src="/heroimg.png"
                 alt=""
@@ -271,7 +271,7 @@ const HeroSection = () => {
             <button
               type="button"
               onClick={() => scrollHelper("solutions")}
-              className="group relative block aspect-[4/5] h-full w-full overflow-hidden rounded-[22px] bg-[var(--bg-card)] text-left sm:aspect-[4/3] sm:rounded-[28px] lg:aspect-auto"
+              className="keep-light group relative block aspect-[4/5] h-full w-full overflow-hidden rounded-[22px] bg-[#0a1122] text-left sm:aspect-[4/3] sm:rounded-[28px] lg:aspect-auto"
               aria-label="See our solutions"
             >
               <AnimatePresence initial={false}>

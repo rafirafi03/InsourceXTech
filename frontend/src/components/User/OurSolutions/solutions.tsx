@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { MoveHorizontal } from "lucide-react";
 import Loader from "../Loader/loader";
-import CircularCarousel from "../Motion/CircularCarousel";
+import FlexCarousel from "../Motion/FlexCarousel";
 import { useMediaQuery, useSolutions } from "../../../Hooks/useSiteContent";
 import { solutionImage } from "../../../data/solutionImages";
 
@@ -11,9 +11,10 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export default function Solutions() {
   const { solutions, isLoading } = useSolutions();
   const isNarrow = useMediaQuery("(max-width: 767px)");
+  const isShort = useMediaQuery("(max-height: 560px)");
 
   const stageRef = useRef<HTMLDivElement>(null);
-  // Mount the ring only once it is near the viewport so its entrance is seen.
+  // Mount the carousel only once it is near the viewport so its entrance is seen.
   const inView = useInView(stageRef, { once: true, margin: "0px 0px -20% 0px" });
 
   const items = useMemo(
@@ -52,30 +53,30 @@ export default function Solutions() {
           </div>
           <p className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--text-faint)]">
             <MoveHorizontal size={16} className="text-[var(--blue)]" />
-            Drag to explore
+            Drag or click to explore
           </p>
         </motion.div>
       </div>
 
       <div
         ref={stageRef}
-        className="relative mt-4 h-[380px] w-full sm:mt-10 sm:h-[600px] lg:h-[660px]"
+        className="relative mt-2 h-[400px] w-full sm:mt-10 sm:h-[560px] lg:h-[min(660px,80svh)] [@media(max-height:560px)]:h-[86svh]"
       >
         {inView && (
-          <CircularCarousel
+          <FlexCarousel
             items={items}
-            preset="cylinder"
+            preset="liquid"
             intro="rise"
-            cardWidth={isNarrow ? 200 : 320}
-            aspectRatio={isNarrow ? 0.6 : 0.8}
-            gap={isNarrow ? 14 : 30}
-            speed={12}
-            fadeColor="#01030a"
-            depthFade={0.7}
-            innerShade={0.35}
-            cornerRadius={18}
-            parallax={0.35}
+            fit="portrait"
+            cardHeight={isShort ? 0.5 : isNarrow ? 0.6 : 0.64}
+            gap={isNarrow ? 10 : 16}
+            radius={isNarrow ? 14 : 20}
+            squeeze={0.2}
+            autoplay
+            interval={3.5}
+            focusOnClick
             captions
+            captureWheel={false}
           />
         )}
       </div>

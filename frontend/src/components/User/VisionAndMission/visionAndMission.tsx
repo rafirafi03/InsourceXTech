@@ -25,7 +25,7 @@ const faceBase: CSSProperties = {
 
 const surface = (variant: Variant) =>
   variant === "blue"
-    ? "border-blue-400/40 bg-[linear-gradient(135deg,#1d4ed8_0%,#2563eb_45%,#0b2a6b_100%)]"
+    ? "keep-light border-blue-400/40 bg-[linear-gradient(135deg,#1d4ed8_0%,#2563eb_45%,#0b2a6b_100%)]"
     : "border-white/10 bg-[var(--bg-card)]";
 
 function Glow({ variant }: { variant: Variant }) {

@@ -5,6 +5,7 @@ import Modal from "../Modal/Modal";
 import ChromaGrid from "../Motion/ChromaGrid";
 import { useMediaQuery, useServices } from "../../../Hooks/useSiteContent";
 import { IService } from "../../../types";
+import { useTheme } from "../../../Hooks/useTheme";
 import { OPEN_SERVICE_EVENT } from "../../../utils/serviceEvents";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -22,6 +23,7 @@ export default function Services() {
   const { services, isLoading } = useServices();
   const [selected, setSelected] = useState<IService | null>(null);
   const closeModal = useCallback(() => setSelected(null), []);
+  const theme = useTheme();
 
   // Open a service's details when another section asks (e.g. a hero strip).
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function Services() {
 
         <ChromaGrid
           items={items}
-          theme="midnight"
+          theme={theme === "light" ? "light" : "midnight"}
           columns={isPhone ? 2 : 3}
           minCardWidth={isPhone ? 120 : 220}
           gap={isPhone ? 10 : 16}

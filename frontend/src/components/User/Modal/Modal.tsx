@@ -51,7 +51,7 @@ const ConfirmationModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-[#01030a]/80 p-4 backdrop-blur-md"
+          className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-[var(--bg)]/80 p-4 backdrop-blur-md"
           data-lenis-prevent
           onClick={onClose}
           role="dialog"
@@ -79,7 +79,7 @@ const ConfirmationModal = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-elev)] via-[var(--bg-elev)]/30 to-transparent" />
                 <button
                   onClick={onClose}
-                  className="absolute top-4 right-4 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition hover:border-[var(--blue)] hover:bg-[var(--blue)]"
+                  className="keep-light absolute top-4 right-4 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-md transition hover:border-[var(--blue)] hover:bg-[var(--blue)]"
                   aria-label="Close"
                 >
                   <X size={18} />

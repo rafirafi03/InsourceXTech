@@ -19,7 +19,8 @@ type WordProps = {
  */
 function Word({ word, progress, range }: WordProps) {
   const p = useTransform(progress, range, [0, 1], { clamp: true });
-  const color = useTransform(p, [0, 1], ["rgba(255,255,255,0.1)", "rgba(255,255,255,1)"]);
+  // Theme-aware: --fg-rgb is the current text colour (white in dark, ink in light).
+  const color = useTransform(p, (v) => `rgb(var(--fg-rgb) / ${(0.1 + 0.9 * v).toFixed(3)})`);
   const filter = useTransform(p, (v) => `blur(${(8 * Math.pow(1 - v, 1.5)).toFixed(2)}px)`);
   const rotateX = useTransform(p, [0, 1], [-60, 0]);
   const rotate = useTransform(p, [0, 1], [5, 0]);

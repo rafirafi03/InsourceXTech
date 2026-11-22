@@ -127,7 +127,7 @@ export default function CompanyDetails() {
             className="relative mx-auto w-full max-w-[460px] lg:col-span-5"
           >
             <DottedGlobe className="w-full" />
-            <div className="pointer-events-none absolute bottom-[14%] left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-[#01030a]/70 px-4 py-2 text-center backdrop-blur-md">
+            <div className="keep-light pointer-events-none absolute bottom-[14%] left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-[#01030a]/70 px-4 py-2 text-center backdrop-blur-md">
               <p className="font-display text-[10px] tracking-[0.3em] text-white">Dubai · UAE</p>
             </div>
             <p className="mt-2 text-center text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--text-faint)]">

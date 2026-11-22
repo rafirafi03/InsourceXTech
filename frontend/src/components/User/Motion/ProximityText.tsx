@@ -36,7 +36,6 @@ type ProximityHeadlineProps = HTMLAttributes<HTMLElement> & {
 // Resting and "under the lens" values for the variable font axes and colours.
 const REST = { wght: 800, wdth: 100 };
 const LENS = { wght: 260, wdth: 78 };
-const WHITE: [number, number, number] = [245, 247, 251];
 const BLUE: [number, number, number] = [59, 130, 246];
 const BLUE_LIGHT: [number, number, number] = [147, 197, 253];
 
@@ -77,7 +76,12 @@ export default function ProximityHeadline({
         1
       )}, "wdth" ${(REST.wdth + (LENS.wdth - REST.wdth) * t).toFixed(1)}`;
       el.style.transform = t > 0.001 ? `translateY(${(-0.06 * t).toFixed(3)}em)` : "";
-      el.style.color = t > 0.001 ? (accent ? mix(BLUE, BLUE_LIGHT, t) : mix(WHITE, BLUE, t)) : "";
+      el.style.color =
+        t > 0.001
+          ? accent
+            ? mix(BLUE, BLUE_LIGHT, t)
+            : `color-mix(in srgb, rgb(${BLUE.join(" ")}) ${(t * 100).toFixed(1)}%, var(--text))`
+          : "";
     };
 
     const frame = () => {
