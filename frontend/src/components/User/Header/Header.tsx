@@ -102,7 +102,7 @@ const Header = () => {
               <img
                 src="/insourcextechlogo.png"
                 alt="Insource Bridge Technologies"
-                className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/15 sm:h-10 sm:w-10"
+                className="h-9 w-9 shrink-0 rounded-full object-cover sm:h-10 sm:w-10"
               />
               <div className="min-w-0 text-left leading-none">
                 <p className="font-display text-sm tracking-[0.18em] text-white sm:text-base">

@@ -61,7 +61,7 @@ const Footer = () => {
                     <a
                       key={i}
                       href={href}
-                      className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-dim)] transition-colors hover:text-white"
+                      className="flex items-start gap-3 text-sm leading-relaxed text-[var(--text-dim)] transition-colors hover:text-[var(--blue)]"
                     >
                       {content}
                     </a>
@@ -91,7 +91,7 @@ const Footer = () => {
           <p>
             Developed by{" "}
             <a
-              className="text-[var(--blue-bright)] transition-colors hover:text-white"
+              className="font-medium text-[var(--blue)] transition-colors hover:text-[var(--text)] hover:underline"
               href="https://www.instagram.com/rafii.in/"
             >
               Ahamad Rafi

@@ -171,13 +171,15 @@ const HeroSection = () => {
                 <ProximityWords text="A NEW" accent />
               </span>{" "}
               <ProximityWords text="ERA" />
+              {/* Our logo, slowly rotating, in place of the old sparkle */}
+              {/* Wrapper keeps it inline: the base stylesheet makes every <img> a block. */}
               <motion.span
                 aria-hidden
-                className="ml-1 inline-block align-top text-[0.28em] text-[var(--blue-bright)]"
-                animate={still ? undefined : { rotate: 360, scale: [1, 1.25, 1] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                className="ml-[0.1em] inline-block h-[0.4em] w-[0.4em] align-top"
+                animate={still ? undefined : { rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               >
-                ✦
+                <img src="/insourcextechlogo.png" alt="" className="h-full w-full rounded-full object-cover" />
               </motion.span>
             </MaskLine>
             <MaskLine delay={T.title + 0.12}>

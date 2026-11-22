@@ -3,16 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/insourcextechlogo.png" />
-    <meta name="theme-color" content="#01030a" />
+    <meta name="theme-color" content="#ffffff" />
     <script>
-      // Apply the saved colour theme before first paint (no flash). Default: dark.
+      // Apply the colour theme before first paint (no flash). Default: light.
       (function () {
+        var theme = "light";
         try {
-          if (localStorage.getItem("insource-theme") === "light") {
-            document.documentElement.setAttribute("data-theme", "light");
-            document.querySelector('meta[name="theme-color"]').setAttribute("content", "#ffffff");
-          }
+          if (localStorage.getItem("insource-theme") === "dark") theme = "dark";
         } catch (e) {}
+        document.documentElement.setAttribute("data-theme", theme);
+        if (theme === "dark") {
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#01030a");
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

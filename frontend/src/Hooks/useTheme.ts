@@ -6,7 +6,7 @@ const STORAGE_KEY = "insource-theme";
 const THEME_COLORS: Record<Theme, string> = { dark: "#01030a", light: "#ffffff" };
 
 const read = (): Theme =>
-  document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
 const subscribe = (onChange: () => void) => {
   const mo = new MutationObserver(onChange);
@@ -30,5 +30,5 @@ export function setTheme(theme: Theme) {
 
 /** Current theme; re-renders when it changes. The initial value is set in index.html. */
 export function useTheme(): Theme {
-  return useSyncExternalStore(subscribe, read, () => "dark");
+  return useSyncExternalStore(subscribe, read, () => "light");
 }
