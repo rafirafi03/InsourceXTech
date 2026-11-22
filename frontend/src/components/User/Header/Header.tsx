@@ -79,7 +79,7 @@ const Header = () => {
                 <p className="font-display text-sm tracking-[0.18em] text-white sm:text-base">
                   INSOURCE
                 </p>
-                <p className="mt-1.5 truncate text-[9px] uppercase tracking-[0.3em] text-[var(--text-faint)] sm:text-[10px]">
+                <p className="mt-1.5 truncate text-[9px] uppercase tracking-[0.3em] text-white/85 sm:text-[10px]">
                   Bridge Technologies
                 </p>
               </div>

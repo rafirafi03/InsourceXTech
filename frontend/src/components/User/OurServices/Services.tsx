@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Loader from "../Loader/loader";
 import Modal from "../Modal/Modal";
 import ChromaGrid from "../Motion/ChromaGrid";
 import { useMediaQuery, useServices } from "../../../Hooks/useSiteContent";
 import { IService } from "../../../types";
+import { OPEN_SERVICE_EVENT } from "../../../utils/serviceEvents";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -21,6 +22,17 @@ export default function Services() {
   const { services, isLoading } = useServices();
   const [selected, setSelected] = useState<IService | null>(null);
   const closeModal = useCallback(() => setSelected(null), []);
+
+  // Open a service's details when another section asks (e.g. a hero strip).
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const id = (e as CustomEvent<string>).detail;
+      const match = services.find((s) => s._id === id);
+      if (match) setSelected(match);
+    };
+    window.addEventListener(OPEN_SERVICE_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_SERVICE_EVENT, onOpen);
+  }, [services]);
   // Phones: always two cards per row.
   const isPhone = useMediaQuery("(max-width: 639px)");
   // Touch screens have no hover spotlight, so show the photos mostly in colour there.

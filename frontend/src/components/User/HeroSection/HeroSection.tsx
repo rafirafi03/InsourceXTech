@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { scrollHelper } from "../../../utils/scrollHelper";
+import { openService } from "../../../utils/serviceEvents";
 import ProximityHeadline, { ProximityWords } from "../Motion/ProximityText";
 import { useServices, useSolutions } from "../../../Hooks/useSiteContent";
 import { solutionImage } from "../../../data/solutionImages";
@@ -58,12 +59,13 @@ function Rise({
 }
 
 /** Tall angled service strip: vertical label on desktop, horizontal bar on smaller screens. */
-function Strip({ label, index, delay }: { label: string; index: number; delay: number }) {
+function Strip({ id, label, index, delay }: { id: string; label: string; index: number; delay: number }) {
   const light = index % 2 === 1;
   return (
     <motion.button
       type="button"
-      onClick={() => scrollHelper("services")}
+      // Scroll to Services, then open this service's details.
+      onClick={() => scrollHelper("services", () => openService(id))}
       initial={{ opacity: 0, scaleY: 0 }}
       animate={{ opacity: 1, scaleY: 1 }}
       transition={{ duration: 1, delay, ease }}
@@ -72,7 +74,7 @@ function Strip({ label, index, delay }: { label: string; index: number; delay: n
           ? "bg-[linear-gradient(160deg,#7cc4f5_0%,#3b82f6_100%)]"
           : "bg-[linear-gradient(160deg,#1d4ed8_0%,#2563eb_55%,#60a5fa_100%)]"
       }`}
-      aria-label={`${label}: view services`}
+      aria-label={`${label}: view details`}
     >
       <span className="text-[13px] font-semibold capitalize leading-tight sm:text-sm lg:rotate-180 lg:text-[15px] lg:[writing-mode:vertical-rl]">
         {label.toLowerCase()}
@@ -99,7 +101,7 @@ const HeroSection = () => {
       .sort((a, b) => a.title.length - b.title.length)
       .slice(0, 4)
       .map((s) => s._id);
-    return services.filter((s) => short.includes(s._id)).map((s) => s.title);
+    return services.filter((s) => short.includes(s._id)).map((s) => ({ id: s._id, label: s.title }));
   }, [services]);
 
   // Chips: short solution names.
@@ -260,8 +262,8 @@ const HeroSection = () => {
             </div>
           </Rise>
 
-          {strips.slice(0, 2).map((label, i) => (
-            <Strip key={label} label={label} index={i} delay={T.strips + i * 0.08} />
+          {strips.slice(0, 2).map((s, i) => (
+            <Strip key={s.id} id={s.id} label={s.label} index={i} delay={T.strips + i * 0.08} />
           ))}
 
           {/* Feature card cycling through solution artwork */}
@@ -326,8 +328,8 @@ const HeroSection = () => {
             </button>
           </Rise>
 
-          {strips.slice(2, 4).map((label, i) => (
-            <Strip key={label} label={label} index={i + 2} delay={T.strips + 0.16 + i * 0.08} />
+          {strips.slice(2, 4).map((s, i) => (
+            <Strip key={s.id} id={s.id} label={s.label} index={i + 2} delay={T.strips + 0.16 + i * 0.08} />
           ))}
         </motion.div>
       </div>
